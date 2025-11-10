@@ -1,0 +1,26 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card p-3">
+      <h4>Welcome to UDC App</h4>
+      <p>
+        <span *ngIf="authSvc.oidcIsAuthenticated"
+          >Hi <b>{{ authSvc.oidcUser?.name }}</b
+          >, <br
+        /></span>
+        We are working on website development.
+      </p>
+      <button
+        *ngIf="!authSvc.oidcIsAuthenticated"
+        pButton
+        label="{{ 'Login' | translate }}"
+        (click)="login()"
+      ></button>
+      <button
+        *ngIf="authSvc.oidcIsAuthenticated"
+        pButton
+        label="{{ 'Logout' | translate }}"
+        (click)="logout()"
+      ></button>
+    </div>
+  </div>
+</div>

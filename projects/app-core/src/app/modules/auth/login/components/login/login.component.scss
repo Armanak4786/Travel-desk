@@ -1,0 +1,35 @@
+form {
+  background-color: var(--background-color-transparent-dark);
+  padding: 2rem;
+  border-radius: 8px;
+
+  input {
+    width: 100%;
+    background-color: transparent;
+    color: var(--background-color-primary);
+  }
+  .password {
+    position: relative;
+    .showPassword {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  ::ng-deep {
+    .p-divider-content {
+      border-radius: 5px;
+      p {
+        color: var(--background-color-dark) !important;
+      }
+    }
+  }
+
+  p,
+  i,
+  label {
+    color: var(--background-color-primary);
+  }
+}

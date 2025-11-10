@@ -1,0 +1,50 @@
+<ng-container>
+  <div class="landingContainer">
+    <div class="text-color-inverted text-center m-2">
+      <p class="text-2xl text-white">
+        {{ "Select Application" | apsTranslate }}
+      </p>
+    </div>
+    <div class="flex justify-content-center align-items-center">
+      <div
+        class="border-1 border-round-sm border-white w-5 flex-column p-2 cursor-pointer"
+        routerLink="/commercial"
+      >
+        <div class="flex justify-content-center">
+          <img src="assets/images/building.svg" />
+        </div>
+        <div
+          [style.color]="'#B7C200'"
+          class="mb-2 text-center"
+          (click)="goToCommercial()"
+        >
+          {{ "Customer Information Portal" | apsTranslate }}
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-row justify-content-center">
+      <div
+        class="border-1 border-round-sm border-white w-4 flex-column p-2 cursor-pointer m-2"
+        routerLink="/dealer"
+      >
+        <div class="flex justify-content-center">
+          <img src="assets/images/Quotes&Applications.svg" />
+        </div>
+        <div [style.color]="'#B7C200'" class="mb-2 text-center">
+          {{ "Quotes & Applications" | apsTranslate }}
+        </div>
+      </div>
+
+      <div
+        class="border-1 border-round-sm border-white w-4 flex-column p-2 cursor-pointer ml-0 m-2"
+      >
+        <div class="flex justify-content-center">
+          <img src="assets/images/setting-2.svg" />
+        </div>
+        <div [style.color]="'#B7C200'" class="mb-2 text-center">
+          {{ "Admin" | apsTranslate }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

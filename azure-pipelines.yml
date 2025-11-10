@@ -1,0 +1,216 @@
+variables:
+  - group: Dependency_Track_Auth
+
+trigger:
+  branches:
+    include:
+      - refs/heads/master
+      - refs/heads/develop
+      - refs/heads/release
+
+pr: none
+
+resources:
+  repositories:
+    - repository: self
+      type: github
+      name: AurionproSolution/FIS-GLOBAL-UDC-UI
+      ref: refs/heads/master
+    - repository: Libraries
+      type: github
+      name: AurionproSolution/Libraries
+      ref: refs/heads/master
+      endpoint: AurionproSolution
+
+pool:
+  name: WIN-AG
+  demands: java
+
+steps:
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $branch = "$env:BUILD_SOURCEBRANCHNAME"
+
+        if ($branch -eq "release") {
+            Write-Host "##vso[task.setvariable variable=sonarProjectKey]FIS-UDC-UI-qat"
+            Write-Host "##vso[task.setvariable variable=sonarProjectName]FIS-UDC-UI-qat"
+        }
+        elseif ($branch -eq "master") {
+            Write-Host "##vso[task.setvariable variable=sonarProjectKey]FIS-UDC-UI-prod"
+            Write-Host "##vso[task.setvariable variable=sonarProjectName]FIS-UDC-UI-prod"
+        }
+        else {
+            Write-Host "##vso[task.setvariable variable=sonarProjectKey]FIS-UDC-UI-dev"
+            Write-Host "##vso[task.setvariable variable=sonarProjectName]FIS-UDC-UI-dev"
+        }
+        Write-Host "sonarProjectKey set to: $env:sonarProjectKey"
+        Write-Host "sonarProjectName set to: $env:sonarProjectName"
+
+  - task: SonarQubePrepare@6
+    inputs:
+     SonarQube: 'FIS-SonarQube'
+     scannerMode: 'CLI'
+     configMode: 'manual'
+     cliProjectKey: '$(sonarProjectKey)'
+     cliProjectName: '$(sonarProjectName)'
+     cliSources: '.'
+     extraProperties: |
+      sonar.projectVersion=$(Build.BuildNumber)
+      sonar.exclusions=**/node_modules/**,**/*.spec.ts
+      sonar.sourceEncoding=UTF-8
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $path = "$env:AGENT_ROOTDIRECTORY.sonarqube\out\sonar-project.properties"
+        if (Test-Path $path) {
+            $content = Get-Content $path | Where-Object { $_ -notmatch "^sonar.branch.name=" }
+            Set-Content -Path $path -Value $content
+        }
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $params = "$env:SONARQUBE_SCANNER_PARAMS" -replace '"sonar.branch.name":"[\w\/\-]*",?', ''
+        Write-Host "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$params"
+
+  - task: NodeTool@0
+    displayName: 'Use Node 18'
+    inputs:
+      versionSpec: '18.x'
+      checkLatest: true
+
+  - task: Npm@1
+    displayName: 'npm install with devDependencies'
+    inputs:
+      command: custom
+      workingDir: '$(System.DefaultWorkingDirectory)'
+      customCommand: 'install --legacy-peer-deps --include=dev'
+
+  - task: Npm@1
+    displayName: 'Install auro-ui package'
+    inputs:
+      command: custom
+      workingDir: '$(System.DefaultWorkingDirectory)'
+      customCommand: 'install auro-ui@0.0.4 --registry http://4.247.147.174:4873/ --force'
+
+  - script: |
+      cd $(System.DefaultWorkingDirectory)
+      npx ng build
+    displayName: 'Build Angular Project'
+
+  - task: SonarQubeAnalyze@6
+    inputs:
+      jdkversion: 'JAVA_HOME'
+      extraProperties: |
+        sonar.scm.provider=git
+
+  - task: SonarQubePublish@6
+    displayName: 'Publish SonarQube Results'
+    inputs:
+      pollingTimeoutSec: '300'
+
+  - task: Npm@1
+    displayName: 'Install Cyclone-DX'
+    inputs:
+      command: custom
+      workingDir: '$(Build.SourcesDirectory)'
+      customCommand: 'install -g @cyclonedx/cyclonedx-npm --legacy-peer-deps'
+
+  - script: |
+      mkdir "$(Build.SourcesDirectory)/sbom" 2>nul
+      cyclonedx-npm --output-file "$(Build.SourcesDirectory)/sbom/backend-bom.xml" --output-format XML --ignore-npm-errors
+    displayName: 'Cyclone-DX SBOM'
+
+  - script: |
+      if exist "$(Build.SourcesDirectory)/sbom/backend-bom.xml" (
+        echo "SBOM file found"
+      ) else (
+        echo "SBOM file not found"
+        exit 1
+      )
+    displayName: 'Verify SBOM'
+
+  - task: GSoft.dependency-track-vsts.upload-bom-dtrack-task.upload-bom-dtrack-task@1
+    displayName: DependencyTrack
+    inputs:
+      dtrackProjName: Portal.GatewayAPI
+      dtrackProjVersion: 1.1.0.1
+      dtrackProjAutoCreate: true
+      bomFilePath: $(Build.SourcesDirectory)/sbom/backend-bom.xml
+      dtrackAPIKey: $(DTRACK_KEY)
+      dtrackURI: 'http://74.225.145.22:8080/'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Build Files'
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)/dist'
+      TargetFolder: '$(build.artifactStagingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: '$(build.artifactStagingDirectory)'
+      ArtifactName: drop
+
+  - powershell: |
+      Write-Host "##vso[task.setvariable variable=publishFolderName]dev"
+    displayName: Set publish folder name to dev
+    condition: eq(variables['Build.SourceBranchName'], 'develop')
+
+  - powershell: |
+      Write-Host "##vso[task.setvariable variable=publishFolderName]qat"
+    displayName: Set publish folder name to qat
+    condition: eq(variables['Build.SourceBranchName'], 'release')
+
+  - powershell: |
+      Write-Host "##vso[task.setvariable variable=publishFolderName]prod"
+    displayName: Set publish folder name to prod
+    condition: eq(variables['Build.SourceBranchName'], 'master')
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $CommitId = $env:BUILD_SOURCEVERSION.Substring(0, 7)
+        Write-Host "##vso[task.setvariable variable=CommitId]$CommitId"
+
+  - task: UniversalPackages@0
+    displayName: Universal publish - develop
+    inputs:
+      command: publish
+      publishDirectory: '$(Build.ArtifactStagingDirectory)'
+      feedListPublish: cae4ee06-eb8e-45bd-87a3-bd4a86d26d20/442afa3e-d526-4829-8cfe-d3190017acd6
+      packageListPublish: fis-udc-ui-$(publishFolderName)
+      verbosity: Debug
+      versionOption: custom
+      versionPublish: $(Build.BuildNumber).$(Build.BuildId)-commit$(CommitId)
+    condition: eq(variables['Build.SourceBranchName'], 'develop')
+
+  - task: UniversalPackages@0
+    displayName: Universal publish - release
+    inputs:
+      command: publish
+      publishDirectory: '$(Build.ArtifactStagingDirectory)'
+      feedListPublish: 456ccb62-60f9-499c-9003-fe55f4588c68
+      packageListPublish: fis-udc-ui-$(publishFolderName)
+      verbosity: Debug
+      versionOption: custom
+      versionPublish: $(Build.BuildNumber).$(Build.BuildId)-commit$(CommitId)
+    condition: eq(variables['Build.SourceBranchName'], 'release')
+
+  - task: UniversalPackages@0
+    displayName: Universal publish - master
+    inputs:
+      command: publish
+      publishDirectory: '$(Build.ArtifactStagingDirectory)'
+      feedListPublish: 9a059bc6-62d2-43a6-a303-4975c8a5e6fb
+      packageListPublish: fis-udc-ui-$(publishFolderName)
+      verbosity: Debug
+      versionOption: custom
+      versionPublish: $(Build.BuildNumber).$(Build.BuildId)-commit$(CommitId)
+    condition: eq(variables['Build.SourceBranchName'], 'master')

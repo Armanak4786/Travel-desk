@@ -1,0 +1,381 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "clientApp": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/clientApp/browser",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": [
+              "canvg",
+              "core-js",
+              "raf",
+              "rgbcolor",
+              "html2canvas",
+              "lodash",
+              "disable-devtool",
+              "jspdf-autotable",
+              "core-js/modules/es.array.iterator.js",
+              "core-js/modules/es.array.index-of.js",
+              "core-js/modules/es.array.reduce.js",
+              "core-js/modules/es.object.to-string.js",
+              "core-js/modules/es.promise.js"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/",
+                "ignore": ["styles/**/*"]
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/auro-ui/src/auro-ui-assets",
+                "output": "auro-ui-assets"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src/assets/images",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "src/styles.scss",
+              "src/assets/external-lib/fontawesome-pro-6.4.2-web/css/all.css",
+              "src/assets/external-lib/fontawesome-pro-6.4.2-web/css/brands.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "10mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "10mb",
+                  "maximumError": "10mb"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "with": "src/environments/environment.prod.ts",
+                  "replace": "src/environments/environment.ts"
+                }
+              ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "clientApp:build:production"
+            },
+            "development": {
+              "buildTarget": "clientApp:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {}
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "clientApp:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "codeCoverage": true,
+
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/",
+                "ignore": ["styles/**/*"]
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/auro-ui/src/auro-ui-assets",
+                "output": "auro-ui-assets"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src/assets/images",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "src/styles.scss",
+              "src/assets/external-lib/fontawesome-pro-6.4.2-web/css/all.css",
+              "src/assets/external-lib/fontawesome-pro-6.4.2-web/css/brands.css"
+            ],
+            "scripts": [],
+            "karmaConfig": "karma.conf.js"
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/clientApp/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "inlineStyleLanguage": "scss"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false,
+              "vendorChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "clientApp:build:development",
+              "serverTarget": "clientApp:server:development"
+            },
+            "production": {
+              "browserTarget": "clientApp:build:production",
+              "serverTarget": "clientApp:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@angular-devkit/build-angular:prerender",
+          "options": {
+            "routes": ["/"]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "clientApp:build:production",
+              "serverTarget": "clientApp:server:production"
+            },
+            "development": {
+              "browserTarget": "clientApp:build:development",
+              "serverTarget": "clientApp:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
+    },
+    "lib-shared": {
+      "projectType": "library",
+      "root": "projects/lib-shared",
+      "sourceRoot": "projects/lib-shared/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/lib-shared/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/lib-shared/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/lib-shared/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/lib-shared/tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"]
+          }
+        }
+      }
+    },
+    "app-core": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/app-core",
+      "sourceRoot": "projects/app-core/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/app-core",
+            "index": "projects/app-core/src/index.html",
+            "main": "projects/app-core/src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "projects/app-core/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": [
+              "canvg",
+              "core-js",
+              "raf",
+              "rgbcolor",
+              "html2canvas",
+              "lodash",
+              "disable-devtool",
+              "jspdf-autotable",
+              "core-js/modules/es.array.iterator.js",
+              "core-js/modules/es.array.index-of.js",
+              "core-js/modules/es.array.reduce.js",
+              "core-js/modules/es.object.to-string.js",
+              "core-js/modules/es.promise.js"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/",
+                "ignore": ["styles/**/*"]
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/auro-ui/src/auro-ui-assets",
+                "output": "auro-ui-assets"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src/assets/images",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "src/styles.scss",
+              "src/assets/external-lib/fontawesome-pro-6.4.2-web/css/all.css",
+              "src/assets/external-lib/fontawesome-pro-6.4.2-web/css/brands.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "app-core:build:production"
+            },
+            "development": {
+              "buildTarget": "app-core:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "app-core:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "projects/app-core/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/",
+                "ignore": ["styles/**/*"]
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/auro-ui/src/auro-ui-assets",
+                "output": "auro-ui-assets"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src/assets/images",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "src/styles.scss",
+              "src/assets/external-lib/fontawesome-pro-6.4.2-web/css/all.css",
+              "src/assets/external-lib/fontawesome-pro-6.4.2-web/css/brands.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

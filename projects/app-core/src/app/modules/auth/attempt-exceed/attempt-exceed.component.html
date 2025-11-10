@@ -1,0 +1,30 @@
+<form [formGroup]="attemptExceed" class="form loginForm">
+  <div class="col-12 text-center">
+    <p class="text-xl font-bold">
+      {{ " Login attempts exceed !" | apsTranslate }}
+    </p>
+  </div>
+  <div class="grid mt-3">
+    <div class="col-5 px-0">
+      <p class="text-sm font-semibold text-center">
+        {{ " Back to " | apsTranslate }}
+        <span class="cursor-pointer" (click)="redirectToLogin()">
+          <u>Login Page</u>
+        </span>
+      </p>
+    </div>
+    <div class="col-2">
+      <p class="text-center">|</p>
+    </div>
+    <div class="col-5 px-0">
+      <p class="text-sm font-semibold">
+        {{ " Email " | apsTranslate }}
+        <span class="cursor-pointer"> <u>UDC Helpdesk</u> </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="col-12 mt-2">
+    <p class="text-center">UDC Helpdesk 0800 UDC LIVE</p>
+  </div>
+</form>
