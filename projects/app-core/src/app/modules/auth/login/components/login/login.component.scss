@@ -1,12 +1,13 @@
 form {
-  background-color: var(--background-color-transparent-dark);
+  background-color: #212121;
   padding: 2rem;
   border-radius: 8px;
-
+width: 25rem ;
+opacity: .9;
   input {
     width: 100%;
-    background-color: transparent;
-    color: var(--background-color-primary);
+    background-color:#212121;
+    color: #ffffff;
   }
   .password {
     position: relative;
@@ -30,6 +31,9 @@ form {
   p,
   i,
   label {
-    color: var(--background-color-primary);
+    color: #ffffff;
+  }
+  a{
+    color: #ffffff;
   }
 }

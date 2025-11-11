@@ -3,6 +3,7 @@ import { AuthenticationService, DataService } from "auro-ui";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LayoutService } from "projects/app-core/src/app/layout/service/app.layout.service";
 import { Router } from "@angular/router";
+import { FloatLabel } from "primeng/floatlabel";
 
 @Component({
   selector: "app-login",
