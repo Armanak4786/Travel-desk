@@ -13,6 +13,7 @@
           alt="logo"
         />
       </a>
+      <div class="vertical-line mx-3"></div>
     </div>
     <div
       class="ml-2 dealer w-4 {{
@@ -28,44 +29,14 @@
           layoutService.state.profileSidebarVisible
       }"
     >
-      <span
-        class="flex align-items-center sm:px-2 p-0 text-sm layout-text date-wrapper"
-      >
+      <span class="flex align-items-center sm:px-2 p-0 text-sm date-wrapper">
         {{ currentServerTimeA }}</span
       >
 
       <div class="vertical-line mx-3"></div>
 
-      <div class="bg-white" *ngIf="showFlag">
-        <input
-          type="text"
-          pInputText
-          placeholder="Quick Menu Search"
-          [(ngModel)]="searchInput"
-        />
-      </div>
-
-      <button
-        class="p-link layout-topbar-button"
-        (click)="onSearchClick(!showFlag)"
-      >
-        <i class="fa-regular fa-magnifying-glass"></i> <span>Search</span>
-      </button>
-      <button class="p-link layout-topbar-button pr-0">
-        <i class="fa-light fa-grid-2"></i>
-      </button>
-
-      <button
-        class="p-link layout-topbar-button"
-        (click)="onSearchClick(!showFlag)"
-      >
-        <i class="fa-regular fa-arrow-up-right-from-square"></i>
-      </button>
-
-      <div class="vertical-line mx-3"></div>
-
       <div
-        class="bell-icon"
+        class="bell-icon mr-3"
         [style]="{ position: 'relative' }"
         #notificationContainer
       >
@@ -86,23 +57,41 @@
         ></app-notification-bell>
       </div>
 
-      <button class="p-link layout-topbar-button">
-        <i class="fa-regular fa-envelope"></i>
-      </button>
+      <div
+        class="bell-icon"
+        [style]="{ position: 'relative' }"
+        #notificationContainer
+      >
+        <p-avatar
+          (click)="showNotification($event)"
+          icon="{{
+            swingIcon ? 'fa-solid' : 'fa-light'
+          }} fa-cog swing-icon bell-font"
+          styleClass="bell-icon {{ swingIcon ? 'swing-icon' : '' }} {{
+            notificationValue > 0 ? '' : 'hideBadge'
+          }}"
+          shape="circle"
+          pBadge
+          value="{{ notificationValue }}"
+        />
+        <app-notification-bell
+          [target]="notificationContainer"
+        ></app-notification-bell>
+      </div>
 
-      <div class="mx-3 border-round-sm">
+      <div class="vertical-line mx-3"></div>
+      <div class="mr-3 border-round-sm">
         <button
           (click)="showOverlay($event)"
           class="p-link layout-topbar-button layout-topbar-button-profile"
         >
-          <i class="fa-solid fa-circle-user text-4xl" style="color: white"> </i>
+          <i class="fa-solid fa-circle-user text-4xl"> </i>
           <span>profile</span>
         </button>
       </div>
-      <div
-        class="flex justify-content-center align-items-center mr-3 text-white"
-      >
-        {{ userName | titlecase }}
+
+      <div class="flex justify-content-center align-items-center mr-3">
+        {{ "Pradeep Sharma" | titlecase }}
       </div>
 
       <app-user-profile-overlay></app-user-profile-overlay>

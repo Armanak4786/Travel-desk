@@ -549,6 +549,10 @@ $colors: (
   top: 3%;
 }
 
+.layout-wrapper {
+  background-color: #f5f5f5;
+}
+
 //_topbar.scss:1
 .main-layout-topbar {
   position: fixed;
@@ -558,6 +562,17 @@ $colors: (
     position: unset;
     width: 98vw;
     margin-left: 1vw;
+    background-color: #fff;
+    color: #000;
+    border: none;
+
+    .layout-topbar-logo {
+      border: none;
+    }
+
+    .vertical-line {
+      border: 1px solid #212529;
+    }
   }
 }
 

@@ -62,13 +62,10 @@
     min-width: 14rem;
     width: auto;
     color: white !important;
-   // background-color: #ffffff;
-    &:hover{
+    // background-color: #ffffff;
+    &:hover {
       background-color: transparent;
     }
-
-
-
   }
   .hourglass {
     display: inline-block;
@@ -110,7 +107,7 @@
       border: 1.5px solid var(--label-color);
       background-color: white;
       color: var(--primary-color);
-      margin-right: 8px;
+      // margin-right: 8px;
       cursor: pointer;
     }
 
@@ -179,7 +176,7 @@
   border-radius: 6px;
   .p-button-icon-left {
     display: none;
-}
+  }
 }
 
 ::ng-deep .topbar-confirm-dialog .p-button-primary {
@@ -199,4 +196,12 @@
   font-weight: 400;
   color: #000000;
   // line-height: 1.5;
+}
+
+.vertical-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid #212529;
+  height: auto;
 }

@@ -39,7 +39,6 @@ export class AppTopBarComponent implements OnInit {
   searchInput: string = "";
   private timeSubscription: Subscription;
   oidcUser: any;
-  userName: any;
   swingIcon = false;
   notificationValue = 0;
 
@@ -74,12 +73,6 @@ export class AppTopBarComponent implements OnInit {
       this.currencyService.initializeCurrency();
     }
     let decodedToken = this.dashboardService.decodeToken(accessToken);
-    this.userName = decodedToken?.sub.replace(".", " ");
-    this.dataService.setNotificationInfo(
-      `${
-        this.userName
-      } logged-in at ${this.layoutService.getCurrentTimeString()}`
-    );
 
     this.updateServerTime();
 
@@ -102,9 +95,7 @@ export class AppTopBarComponent implements OnInit {
       }, 4000);
     });
     this.dashboardService.quoteRoute.next(false);
-    if (this.userName) {
-      this.dashboardService.callOriginatorApi();
-    }
+
     await this.validationSvc.getValidations().subscribe(async (data) => {});
     this.checkRoute(this.router.url);
 
@@ -124,24 +115,6 @@ export class AppTopBarComponent implements OnInit {
     setTimeout(() => {
       this.swingIcon = false;
     }, 4000);
-  }
-
-  showInput() {
-    this.showFlag = true;
-  }
-
-  onSearchClick(showSearch: boolean) {
-    this.showFlag = showSearch;
-    if (this.showFlag) {
-      setTimeout(() => {
-        const element: any = document.getElementById("searchInput");
-        if (element) {
-          element?.focus();
-        }
-      });
-    } else {
-      this.searchInput = "";
-    }
   }
 
   showOverlay(event: Event) {
