@@ -1,15 +1,16 @@
 <ng-container *ngIf="pageType === 'login'">
   <form [formGroup]="loginForm" class="form loginForm">
     <div class="username mb-4">
-     <p-floatLabel>
-    <input
-    id="username" 
-    type="text" 
-    pInputText 
-    formControlName="username"
-    autocomplete />
-    <label for="username">User name</label>
-</p-floatLabel>
+      <p-floatLabel>
+        <input
+          id="username"
+          type="text"
+          pInputText
+          formControlName="username"
+          autocomplete
+        />
+        <label for="username">User name</label>
+      </p-floatLabel>
       <div
         *ngIf="
           loginForm.get('username').touched && loginForm.get('username').invalid
@@ -21,20 +22,21 @@
     </div>
 
     <div class="w-100 password mb-4">
-    <p-floatLabel>
-    <input
-    id="password" 
-    [type]="hidePassword ? 'password' : 'text'"
-    pInputText 
-    formControlName="password"
-    autocomplete />
-    <label for="password">Password</label>
-      <i
-        class="showPassword fa-solid cursor-pointer"
-        [ngClass]="hidePassword ? 'fa-eye' : 'fa-eye-slash'"
-        (click)="togglePasswordVisibility()"
-      ></i>
-</p-floatLabel>
+      <p-floatLabel>
+        <input
+          id="password"
+          [type]="hidePassword ? 'password' : 'text'"
+          pInputText
+          formControlName="password"
+          autocomplete
+        />
+        <label for="password">Password</label>
+        <i
+          class="showPassword fa-solid cursor-pointer"
+          [ngClass]="hidePassword ? 'fa-eye' : 'fa-eye-slash'"
+          (click)="togglePasswordVisibility()"
+        ></i>
+      </p-floatLabel>
       <div
         *ngIf="
           loginForm.get('password').touched && loginForm.get('password').invalid
@@ -55,8 +57,7 @@
       <label for="remember" class="ml-2 text-white">Remember me</label>
 
       <div class="inline-block float-right">
-        <a
-          class="text-sm hover:underline text-white pointer"
+        <a class="text-sm hover:underline text-white pointer"
           >Forgotten your login details??</a
         >
       </div>
@@ -71,11 +72,18 @@
     </div>
     <div class="text-center test-sm text-white mt-4 font-weight-400">
       New user?
-      <span><a href="" class="font-weight-400 text-sm hover:underline text-color-secondary">Sign Up</a></span>
+      <span
+        ><a
+          href=""
+          class="font-weight-400 text-sm hover:underline text-color-secondary"
+          >Sign Up</a
+        ></span
+      >
     </div>
     <div class="text-center">
       <p class="text-xs mt-4">
-By accessing OmniFin LOS Live! you confirm you are an authorised user and have agreed to the application 
+        By accessing OmniFin LOS Live! you confirm you are an authorised user
+        and have agreed to the application
         <a
           href="javascript:void(0)"
           class="text-white underline"
@@ -84,7 +92,9 @@ By accessing OmniFin LOS Live! you confirm you are an authorised user and have a
         >. Unauthorised use may be referred to the appropriate authorities.
       </p>
     </div>
-    <div class="text-center hover:underline text-white font-weight-700 text-sm mt-4">
+    <div
+      class="text-center hover:underline text-white font-weight-700 text-sm mt-4"
+    >
       <a href="">Skip For Now</a>
     </div>
   </form>

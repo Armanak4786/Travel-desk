@@ -10,7 +10,6 @@ import { LayoutService } from "../../service/app.layout.service";
 import { NavigationEnd, Router } from "@angular/router";
 import { filter, Subscription, timer } from "rxjs";
 import { SidemenuService } from "../sidemenu/app.sidemenu.service";
-import { DashboardService } from "../../../modules/dealer/dashboard/services/dashboard.service";
 import {
   AuthenticationService,
   CommonService,
@@ -53,7 +52,6 @@ export class AppTopBarComponent implements OnInit {
     public layoutService: LayoutService,
     public authSvc: AuthenticationService,
     private sidemenuService: SidemenuService,
-    public dashboardService: DashboardService,
     private validationSvc: ValidationService,
     public currencyService: CurrencyService,
     private dataService: DataService,
@@ -71,7 +69,6 @@ export class AppTopBarComponent implements OnInit {
     if (accessToken) {
       this.currencyService.initializeCurrency();
     }
-    let decodedToken = this.dashboardService.decodeToken(accessToken);
 
     this.updateServerTime();
 
@@ -93,7 +90,6 @@ export class AppTopBarComponent implements OnInit {
         this.swingIcon = false;
       }, 4000);
     });
-    this.dashboardService.quoteRoute.next(false);
 
     await this.validationSvc.getValidations().subscribe(async (data) => {});
     this.checkRoute(this.router.url);
@@ -139,40 +135,6 @@ export class AppTopBarComponent implements OnInit {
 
     this.currentRoute = this.router.url;
     let message = "dealerChangeWarningMsg";
-    if (this.currentRoute == "/dealer/quick-quote") {
-      this.dashboardService.quoteRoute.next(true);
-      this.confirmBox(event, message);
-    } else {
-      this.confirmBox(event, message);
-      this.dashboardService.quoteRoute.next(false);
-    }
-  }
-
-  confirmBox(event, message) {
-    this.confirmationService.confirm({
-      message: this.translateSvc.instant(message),
-      icon: "", // or '' to remove
-      acceptLabel: "Yes",
-      rejectLabel: "No",
-      acceptButtonStyleClass: "p-button-primary",
-      rejectButtonStyleClass: "p-button-outlined",
-      accept: () => {
-        this.dashboardService?.quoteRoute.next(false);
-        this.dashboardService.setDealerToLocalStorage(event.value);
-      },
-      reject: () => {
-        const dealerValue = sessionStorage.getItem("dealerPartyNumber");
-        const dealerName = sessionStorage.getItem("dealerPartyName");
-        this.dashboardService.userSelectedOption = {
-          name: dealerName,
-          num: Number(dealerValue),
-        };
-      },
-    });
-    setTimeout(() => {
-      const dialog = document.querySelector(".p-confirm-dialog");
-      dialog?.classList.add("topbar-confirm-dialog");
-    });
   }
 
   @HostListener("document:click", ["$event"])

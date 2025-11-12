@@ -16,7 +16,6 @@ import { AppLayoutComponent } from "./layout/components/layout/app.layout.compon
 import { AccordionModule } from "primeng/accordion";
 import { UserProfileOverlayComponent } from "./layout/components/user-profile-overlay/user-profile-overlay.component";
 import { LanguageSwitcherComponent } from "./layout/components/language-switcher/language-switcher.component";
-import { TranslateModule } from "@ngx-translate/core";
 import { NotificationBellComponent } from "./layout/components/notification-bell/notification-bell.component";
 import { SubSidemenuComponent } from "./layout/components/sub-sidemenu/sub-sidemenu.component";
 import { ReportsDialogComponent } from "./layout/components/reports-dialog/reports-dialog.component";
@@ -35,7 +34,7 @@ import { ReportsDialogComponent } from "./layout/components/reports-dialog/repor
     LanguageSwitcherComponent,
     NotificationBellComponent,
     SubSidemenuComponent,
-    ReportsDialogComponent
+    ReportsDialogComponent,
   ],
   imports: [
     CommonModule,

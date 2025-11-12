@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { GenTableComponent } from "auro-ui";
+import { Router } from "@angular/router";
+import { GenTableComponent, StorageService } from "auro-ui";
 
 @Component({
-  selector: "app-travel-request-list", // Changed selector for clarity
-  templateUrl: "./quote-list.component.html",
-  styleUrl: "./quote-list.component.scss",
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrl: "./dashboard.component.scss",
 })
-export class TravelRequestListComponent implements OnInit { // Renamed class
-  
+export class DashboardComponent implements OnInit {
   @ViewChild("dt")
   dt: GenTableComponent;
 
@@ -26,12 +26,12 @@ export class TravelRequestListComponent implements OnInit { // Renamed class
   first: number = 0;
   rows: number = 10;
   totalRecord: number = 0;
-rowsPerPageOptions: any[] = [
-    { label: '10', value: 10 },
-    { label: '20', value: 20 },
-    { label: '30', value: 30 }
+  rowsPerPageOptions: any[] = [
+    { label: "10", value: 10 },
+    { label: "20", value: 20 },
+    { label: "30", value: 30 },
   ];
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     // Populate filter bar options
@@ -54,13 +54,13 @@ rowsPerPageOptions: any[] = [
    */
   defineColumns() {
     this.columnsAsset = [
-      { field: "requestNo", headerName: "Request No", sortable:true },
+      { field: "requestNo", headerName: "Request No", sortable: true },
       {
         field: "travelDate",
         headerName: "Travel Date",
         format: "#date",
         dateFormat: "dd MMM yyyy", // Matches Figma format,
-        sortable: true
+        sortable: true,
       },
       {
         field: "returnDate",
@@ -99,9 +99,9 @@ rowsPerPageOptions: any[] = [
         tripStatus: "Pending",
         // The 'actions' array tells gen-table which icons to show
         actions: [
-          { actionName: 'edit', icon: 'pi pi-pencil', tooltip: 'Edit Request' },
-          { actionName: 'view', icon: 'pi pi-eye', tooltip: 'View Details' }
-        ]
+          { actionName: "edit", icon: "pi pi-pencil", tooltip: "Edit Request" },
+          { actionName: "view", icon: "pi pi-eye", tooltip: "View Details" },
+        ],
       },
       {
         requestNo: "87162308623",
@@ -113,9 +113,9 @@ rowsPerPageOptions: any[] = [
         requestStatus: "Approved",
         tripStatus: "Pending",
         actions: [
-          { actionName: 'edit', icon: 'pi pi-pencil', tooltip: 'Edit Request' },
-          { actionName: 'view', icon: 'pi pi-eye', tooltip: 'View Details' }
-        ]
+          { actionName: "edit", icon: "pi pi-pencil", tooltip: "Edit Request" },
+          { actionName: "view", icon: "pi pi-eye", tooltip: "View Details" },
+        ],
       },
       {
         requestNo: "37482901576",
@@ -127,9 +127,9 @@ rowsPerPageOptions: any[] = [
         requestStatus: "Rejected",
         tripStatus: "Completed",
         actions: [
-          { actionName: 'edit', icon: 'pi pi-pencil', tooltip: 'Edit Request' },
-          { actionName: 'view', icon: 'pi pi-eye', tooltip: 'View Details' }
-        ]
+          { actionName: "edit", icon: "pi pi-pencil", tooltip: "Edit Request" },
+          { actionName: "view", icon: "pi pi-eye", tooltip: "View Details" },
+        ],
       },
       {
         requestNo: "19574206384",
@@ -141,9 +141,9 @@ rowsPerPageOptions: any[] = [
         requestStatus: "In Progress",
         tripStatus: "Completed",
         actions: [
-          { actionName: 'edit', icon: 'pi pi-pencil', tooltip: 'Edit Request' },
-          { actionName: 'view', icon: 'pi pi-eye', tooltip: 'View Details' }
-        ]
+          { actionName: "edit", icon: "pi pi-pencil", tooltip: "Edit Request" },
+          { actionName: "view", icon: "pi pi-eye", tooltip: "View Details" },
+        ],
       },
       {
         requestNo: "46028394720",
@@ -155,16 +155,16 @@ rowsPerPageOptions: any[] = [
         requestStatus: "On Hold",
         tripStatus: "Completed",
         actions: [
-          { actionName: 'edit', icon: 'pi pi-pencil', tooltip: 'Edit Request' },
-          { actionName: 'view', icon: 'pi pi-eye', tooltip: 'View Details' }
-        ]
+          { actionName: "edit", icon: "pi pi-pencil", tooltip: "Edit Request" },
+          { actionName: "view", icon: "pi pi-eye", tooltip: "View Details" },
+        ],
       },
       // ... add more mock data as needed
     ];
     this.allTravelRequests = mockData;
     this.filteredRequests = this.allTravelRequests; // On load, filtered = all
     this.totalRecord = this.filteredRequests.length;
-    this.updatePagedData();// For client-side pagination
+    this.updatePagedData(); // For client-side pagination
   }
 
   // --- STUB METHODS FOR UI ACTIONS ---
@@ -173,10 +173,10 @@ rowsPerPageOptions: any[] = [
    * Handles clicking on the 'All', 'Pending', 'Approved', 'Rejected' tabs.
    * @param status The status that was clicked (e.g., 'All', 'Pending')
    */
-onStatusTabChange(status: string) {
+  onStatusTabChange(status: string) {
     this.selectedStatus = status;
     // Filter from the master list
-    if (status === 'All') {
+    if (status === "All") {
       this.filteredRequests = this.allTravelRequests;
     } else {
       this.filteredRequests = this.allTravelRequests.filter(
@@ -186,7 +186,7 @@ onStatusTabChange(status: string) {
 
     // Update total records for the paginator
     this.totalRecord = this.filteredRequests.length;
-    
+
     // Reset pagination
     this.first = 0;
 
@@ -228,6 +228,7 @@ onStatusTabChange(status: string) {
    * Handles the '+ Raise a Request' button click.
    */
   raiseNewRequest() {
+    this.router.navigate(["/raise-ticket"]);
     console.log("Navigating to new request page...");
     // This would typically navigate to the form page
     // e.g., this.commonSvc.router.navigateByUrl('/travel/new-request');

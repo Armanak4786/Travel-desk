@@ -18,10 +18,18 @@ const routes: Routes = [
       {
         path: "dashboard",
         loadChildren: () =>
-          import("./modules/dealer/dealer.module").then((m) => m.DealerModule),
-
+          import("./modules/dashboard/dashboard.module").then(
+            (m) => m.DashboardModule
+          ),
         data: { breadcrumb: "Dashboard" },
         canActivate: [AuthGuard],
+      },
+      {
+        path: "raise-ticket",
+        loadChildren: () =>
+          import("./modules/raise-ticket/raise-ticket.module").then(
+            (m) => m.RaiseTicketModule
+          ),
       },
     ],
   },
