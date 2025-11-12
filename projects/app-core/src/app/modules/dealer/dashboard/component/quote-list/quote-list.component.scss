@@ -1,3 +1,111 @@
 ::ng-deep .reset-btn-color .p-button-label {
   color: black;
 }
+.status-filters {
+  ::ng-deep gen-button {
+    
+    /* This assumes your gen-button renders a <button> with class 'p-button'.
+      This is the standard PrimeNG way.
+    */
+    button.p-button { 
+      display: flex;
+      width: 6.25rem;
+      height: 2rem;
+      padding: 0.625rem;
+      justify-content: center;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.875rem;
+    }
+  }
+}
+/* Use :host to scope ::ng-deep to this component */
+:host {
+  ::ng-deep {
+    
+    /* Style the main paginator bar */
+    p-paginator.p-paginator {
+      background-color: transparent; // Remove default background
+      border: none;
+      // padding: 1rem 0;
+    }
+
+    /* Our custom left-side template container */
+    .paginator-left-custom {
+
+      .rows-label {
+        color: #6c757d; // Muted text color
+      }
+
+      /* Style the custom dropdown to have an underline */
+      .rows-dropdown.p-dropdown {
+        background: transparent;
+        border: none;
+        width: auto !important;
+
+        /* This styles the selected value ("10") */
+        .p-dropdown-label.p-inputtext {
+          color: #212529; // Darker text
+          font-weight: 500;
+          border: none;
+          border-bottom: 1px solid #aaa; // Underline style
+          border-radius: 0;
+          box-shadow: none;
+          padding-bottom: 0;
+          margin-bottom: 0;
+        }
+
+        /* Style the dropdown arrow */
+        .p-dropdown-trigger {
+          border-bottom: 1px solid #aaa;
+          color: #aaa; // Match underline color
+        }
+      }
+    }
+
+    /* Style the page links container */
+    .p-paginator-pages {
+      .p-paginator-page {
+        background-color: #fff; // White circle
+        border-radius: 50%;
+        color: #333;
+        min-width: 2.25rem;  // Page circle size
+        height: 2.25rem;
+        margin: 0 0.25rem;
+        transition: background-color 0.2s, color 0.2s;
+        border: 1px solid #eee; // Faint border
+        font-size: 0.9rem;
+
+        &:hover {
+          background-color: #f0f0f0; // Light grey hover
+        }
+
+        /* Active Page Style (the grey box) */
+        &.p-highlight {
+          background-color: #d9d9d9; // Grey background
+          color: #000;
+          border-radius: 6px; // Rounded rectangle
+          font-weight: bold;
+        }
+      }
+    }
+
+    /* Style the arrow buttons */
+    .p-paginator-prev,
+    .p-paginator-next,
+    .p-paginator-first,
+    .p-paginator-last {
+      background-color: #fff;
+      border-radius: 50%;
+      color: #333;
+      min-width: 2.25rem; // Arrow circle size
+      height: 2.25rem;
+      margin: 0 0.25rem;
+      border: 1px solid #eee;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+    }
+  }
+}

@@ -1,12 +1,129 @@
-<div class="lg:col-12">
-  <gen-table
-    [columns]="columnsAsset"
-    [dataList]="microservicesList"
-    [tableStyle]="'stripped-rows'"
-    [rowHeight]="'12px'"
-    [sortFlag]="true"
-    [sortable]="true"
-    [bodyClass]="''"
-    [headingClass]="''"
-  ></gen-table>
+<div class="travel-request-container p-4">
+
+  <div class="grid mb-3 p-fluid">
+    <div class="col-12 md:col-6 lg:col-5">
+
+<div class="flex gap-2 status-filters">
+    <gen-button 
+      [btnLabel]="'All'"
+      (onClick)="onStatusTabChange('All')"
+      [btnType]="selectedStatus === 'All' ? '' : 'border-btn'"
+    ></gen-button>
+    <gen-button 
+      [btnLabel]="'Pending'"
+      (onClick)="onStatusTabChange('Pending')"
+      [btnType]="selectedStatus === 'Pending' ? '' : 'border-btn'"
+    ></gen-button>
+    <gen-button 
+      [btnLabel]="'Approved'"
+      (onClick)="onStatusTabChange('Approved')"
+      [btnType]="selectedStatus === 'Approved' ? '' : 'border-btn'"
+    ></gen-button>
+    <gen-button
+      [btnLabel]="'Rejected'"
+      (onClick)="onStatusTabChange('Rejected')"
+      [btnType]="selectedStatus === 'Rejected' ? '' : 'border-btn'"
+    ></gen-button>
+  </div>
+      
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-7">
+      <div class="flex justify-content-end align-items-center gap-3">
+        
+        <div class="w-13rem">
+          <p-dropdown
+            [options]="yearOptions"
+            [(ngModel)]="selectedYear"
+            optionLabel="label"
+            optionValue="value"
+            (onChange)="onYearChange($event)"
+          />
+        </div>
+
+        <a href="javascript:void(0)" 
+           class="text-primary text-sm" 
+           (click)="refreshData()">
+          <i class="pi pi-sync pr-1"></i> Refresh
+        </a>
+        
+        <a href="javascript:void(0)" 
+           class="text-primary text-sm" 
+           (click)="openFilters()">
+          <i class="pi pi-sliders-h pr-1"></i> Filter
+        </a>
+
+        <div>
+          <gen-button class="text-white font-medium"
+            [btnLabel]="'+ Raise a Request'"
+            (onClick)="raiseNewRequest()"
+          ></gen-button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="col-12">
+      <ng-container *ngIf="rowData?.length > 0; else dataNotFound">
+        
+        <gen-table
+          [id]="'travelRequestTable'"
+          #dt
+          [columns]="columnsAsset"
+          [dataList]="rowData"
+          [showFilter]="false"
+          [tableStyle]="'stripped-rows'"
+          [rowHeight]="'auto'" 
+          [paginatorFlag]="false"
+          [sortFlag]="true"
+          [sortable]="true"
+          (onCellClick)="onCellClick($event)"
+        ></gen-table>
+
+        <div>
+<div>
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="totalRecord"
+    [templateLeft]="customPaginatorLeft" 
+  />
+</div>
+
+<ng-template #customPaginatorLeft>
+  <div class="paginator-left-custom p-d-flex p-ai-center">
+    <span class="rows-label p-mr-2">Rows per page</span>
+    <p-dropdown 
+      [options]="rowsPerPageOptions" 
+      [(ngModel)]="rows" 
+      (onChange)="onPageChange({first: 0, rows: $event.value, page: 0})"
+      styleClass="rows-dropdown"
+    ></p-dropdown>
+  </div>
+</ng-template>
+        </div>
+      </ng-container>
+
+      <ng-template #dataNotFound>
+        <gen-card>
+          <ng-container body>
+            <div class="flex justify-content-center align-items-center flex-column p-5">
+              <img
+                src="assets/images/datanotfound.png"
+                alt="No Data Found"
+                class="mb-5 mt-5"
+                style="width: 200px;"
+              />
+              <h3 class="text-xl">No Travel Requests Found</h3>
+              <p class="text-color-secondary">Try adjusting your filters or raise a new request.</p>
+            </div>
+          </ng-container>
+        </gen-card>
+      </ng-template>
+    </div>
+  </div>
+
 </div>

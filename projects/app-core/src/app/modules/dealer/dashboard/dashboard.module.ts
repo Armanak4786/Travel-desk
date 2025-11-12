@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { FormsModule } from '@angular/forms'; 
 import { DashboardComponent } from "./dashboard.component";
 import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { AuroUiFrameWork } from "auro-ui";
@@ -8,7 +9,7 @@ import { ApplicationOutcomeComponent } from "./component/application-outcome/app
 import { AverageSalesComponent } from "./component/average-sales/average-sales.component";
 import { ExportDataComponent } from "./component/export-data/export-data.component";
 import { MonthlyVolumesComponent } from "./component/monthly-volumes/monthly-volumes.component";
-import { QuoteListComponent } from "./component/quote-list/quote-list.component";
+import { TravelRequestListComponent } from './component/quote-list/quote-list.component';
 import { WorkflowStatusComponent } from "./component/workflow-status/workflow-status.component";
 import { AssignSalespersonComponent } from "./component/assign-salesperson/assign-salesperson.component";
 import { AssigneeDiscloserComponent } from "./component/assignee-discloser/assignee-discloser.component";
@@ -22,7 +23,7 @@ import { PaginatorModule } from "primeng/paginator";
     AverageSalesComponent,
     ApplicationOutcomeComponent,
     WorkflowStatusComponent,
-    QuoteListComponent,
+    TravelRequestListComponent,
     ExportDataComponent,
     AssignSalespersonComponent,
     AssigneeDiscloserComponent,
@@ -32,6 +33,7 @@ import { PaginatorModule } from "primeng/paginator";
     DashboardRoutingModule,
     AuroUiFrameWork,
     PaginatorModule,
+    FormsModule,
   ],
 })
 export class DashboardModule {}
