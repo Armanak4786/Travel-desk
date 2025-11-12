@@ -1,18 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuoteListComponent } from './quote-list.component';
+// Updated import to match the new component class name
+import { TravelRequestListComponent } from './quote-list.component'; 
 
-describe('QuoteListComponent', () => {
-  let component: QuoteListComponent;
-  let fixture: ComponentFixture<QuoteListComponent>;
+// Updated describe block to match the new component name
+describe('TravelRequestListComponent', () => { 
+  let component: TravelRequestListComponent;
+  let fixture: ComponentFixture<TravelRequestListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuoteListComponent]
+      imports: [TravelRequestListComponent] // Use the new component name here
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(QuoteListComponent);
+    fixture = TestBed.createComponent(TravelRequestListComponent); // Use the new component name here
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
