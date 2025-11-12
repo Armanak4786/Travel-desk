@@ -1,8 +1,5 @@
-import { Component, inject, OnInit } from "@angular/core";
-import { DataService } from "auro-ui";
-import { LayoutService } from "projects/app-core/src/app/layout/service/app.layout.service";
-import { OidcSecurityService } from "angular-auth-oidc-client";
-
+import { Component, OnInit } from "@angular/core";
+import { LayoutService } from "projects/app/layout/service/app.layout.service";
 @Component({
   selector: "app-landing",
   templateUrl: "./landing.component.html",

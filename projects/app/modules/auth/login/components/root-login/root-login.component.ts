@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
-
-import { LayoutService } from "projects/app-core/src/app/layout/service/app.layout.service";
+import { LayoutService } from "projects/app/layout/service/app.layout.service";
 
 @Component({
   selector: "app-root-login",

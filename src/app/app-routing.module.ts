@@ -1,25 +1,25 @@
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { NotfoundComponent } from 'auro-ui';
+import { RouterModule } from "@angular/router";
+import { NgModule } from "@angular/core";
+import { NotfoundComponent } from "auro-ui";
 
 @NgModule({
   imports: [
     RouterModule.forRoot(
       [
         {
-          path: '',
+          path: "",
           loadChildren: () =>
-            import('../../projects/app-core/src/app/app-core.module').then(
+            import("../../projects/app/app-core.module").then(
               (m) => m.CoreAppModule
             ),
         },
-        { path: 'notfound', component: NotfoundComponent },
-        { path: '**', redirectTo: '/notfound' },
+        { path: "notfound", component: NotfoundComponent },
+        { path: "**", redirectTo: "/notfound" },
       ],
       {
-        scrollPositionRestoration: 'enabled',
-        anchorScrolling: 'enabled',
-        onSameUrlNavigation: 'reload',
+        scrollPositionRestoration: "enabled",
+        anchorScrolling: "enabled",
+        onSameUrlNavigation: "reload",
         //useHash: true,
       }
     ),

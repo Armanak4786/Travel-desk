@@ -4,7 +4,6 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { AuroUiFrameWork, ConfigService, loadConfigAndSetEnv } from "auro-ui";
 import { BrowserModule } from "@angular/platform-browser";
-import { CoreAppModule } from "projects/app-core/src/app/app-core.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
 import {
@@ -15,6 +14,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { JwtModule } from "@auth0/angular-jwt";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { CurrencyMaskModule } from "ng2-currency-mask";
+import { CoreAppModule } from "projects/app/app-core.module";
 
 export function tokenGetter() {
   return localStorage.getItem("id_token");
