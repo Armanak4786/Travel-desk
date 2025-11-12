@@ -67,7 +67,6 @@ export class AppTopBarComponent implements OnInit {
   isSidemenuExpanded: boolean = false;
 
   async ngOnInit() {
-    // sessionStorage.removeItem('currency_data');
     let accessToken = sessionStorage.getItem("accessToken");
     if (accessToken) {
       this.currencyService.initializeCurrency();
