@@ -1,54 +1,51 @@
-<p-overlayPanel #overlayPanel>
-  <ng-content>
-    <div class="p-fluid p-2 cursor-pointer" (click)="changePassword()">
-      <div class="inline-block w-1rem h-1rem">
-        <i class="pi pi-lock"></i>
-      </div>
-      <div class="inline-block px-2">
-       Change Password
-      </div>
-    </div>
-
-     <div class="p-fluid p-2 cursor-pointer" (click)="logout()">
-      <div class="inline-block w-1rem h-1rem">
-        <i class="pi pi-user"></i>
-      </div>
-      <div class="inline-block px-2">
-        Logout
-        <!-- {{ userName }} -->
+<p-overlayPanel
+  #overlayPanel
+  [showCloseIcon]="false"
+  styleClass="user-profile-overlay"
+>
+  <div class="profile-dropdown-content">
+    <div class="profile-header">
+      <img
+        src="https://placehold.co/40x40/E0E0E0/757575?text=PS"
+        alt="User Avatar"
+        class="profile-avatar"
+      />
+      <div class="profile-info">
+        <span class="profile-name">{{ userName }}</span>
+        <span class="profile-email">{{ userEmail }}</span>
       </div>
     </div>
 
-    <!-- <div class="p-fluid p-2 user-profile-background border-round-sm">
-      <div class="py-1">
-        {{ "Corporate Name"  }} : ABC Corporate
+    <div class="profile-login-time">
+      <hr class="profile-divider" />
+      <div class="login-details">
+        <span class="login-label">Login:</span>
+        <span class="login-value">{{ lastLoginTime }}</span>
       </div>
-      <div class="py-1">{{ "User ID"  }} : User ID1</div>
-      <div class="mt-1 border-bottom-1 border-white"></div>
-
-      <div class="py-1">{{ "Last Logged In" }} -</div>
-      <div class="py-1">{{ "Last Failed Log In" }} -</div>
+      <hr class="profile-divider" />
     </div>
-    <div class="p-1 p-fluid">
-      <div class="py-1 pointer">
-        <div class="inline-block w-1rem h-1rem">
-          <i class="pi pi-pencil"></i>
-        </div>
-        <div class="inline-block px-2">
-          {{ "Edit Profile" }}
-        </div>
-      </div>
-      <div class="p-fluid py-1 pointer">
-        <div class="inline-block w-1rem h-1rem">
-          <i class="pi pi-sync"></i>
-        </div>
-        <div class="inline-block px-2">
-          {{ "Last Login Activities" }}
-        </div>
-      </div>
-    </div> -->
-    <!-- <div class="p-fluid">
-      <gen-button [btnLabel]="'Logout'" (onClick)="logout()" />
-    </div> -->
-  </ng-content>
+
+    <ul class="profile-menu">
+      <li (click)="onSettingsClick()">
+        <i class="fa-solid fa-cog menu-icon"></i>
+        <span>Settings</span>
+      </li>
+      <li (click)="onPreferencesClick()">
+        <i class="fa-solid fa-sliders menu-icon"></i>
+        <span>My Preferences</span>
+      </li>
+      <li (click)="onEditProfileClick()">
+        <i class="fa-solid fa-pencil menu-icon"></i>
+        <span>Edit Profile</span>
+      </li>
+      <li (click)="changePassword()">
+        <i class="fa-solid fa-lock menu-icon"></i>
+        <span>Change Password</span>
+      </li>
+    </ul>
+
+    <div class="profile-logout">
+      <button (click)="logout()" class="logout-button">LOGOUT</button>
+    </div>
+  </div>
 </p-overlayPanel>

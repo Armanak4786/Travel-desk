@@ -8,8 +8,10 @@ import { LanguageService } from "auro-ui";
 })
 export class LanguageSwitcherComponent implements OnInit {
   langData: any = [
-    { name: "EN", code: "en" },
-    { name: "AR", code: "fr" },
+    { name: "English", code: "en" },
+    { name: "हिंदी", code: "hi" },
+    { name: "मराठी", code: "mr" },
+    { name: "বাংলা", code: "bn" },
   ];
   selectedLang: string = "";
   constructor(

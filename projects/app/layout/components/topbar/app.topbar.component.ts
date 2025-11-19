@@ -4,6 +4,7 @@ import {
   HostListener,
   OnInit,
   ViewChild,
+  OnDestroy,
 } from "@angular/core";
 import { ConfirmationService, MenuItem } from "primeng/api";
 import { LayoutService } from "../../service/app.layout.service";
@@ -19,24 +20,30 @@ import {
   ValidationService,
 } from "auro-ui";
 import { TranslateService } from "@ngx-translate/core";
+import { DatePipe } from "@angular/common";
+import { UserProfileOverlayComponent } from "../user-profile-overlay/user-profile-overlay.component";
 
 @Component({
   selector: "app-topbar",
   templateUrl: "./app.topbar.component.html",
   styleUrl: "./app.topbar.component.scss",
+  providers: [DatePipe], 
 })
-export class AppTopBarComponent implements OnInit {
+export class AppTopBarComponent implements OnInit, OnDestroy {
   items!: MenuItem[];
 
   @ViewChild("menubutton") menuButton!: ElementRef;
-
   @ViewChild("topbarmenubutton") topbarMenuButton!: ElementRef;
-
   @ViewChild("topbarmenu") menu!: ElementRef;
-  currentServerTimeA: string;
+  @ViewChild(UserProfileOverlayComponent)
+  profileOverlay: UserProfileOverlayComponent;
+
+  currentServerTimeA: string; 
+  formattedDate: string; 
+  private timeSubscription: Subscription;
+
   showFlag: boolean = false;
   searchInput: string = "";
-  private timeSubscription: Subscription;
   oidcUser: any;
   swingIcon = false;
   notificationValue = 0;
@@ -48,6 +55,9 @@ export class AppTopBarComponent implements OnInit {
   currentRoute: any;
   enabledRoutes: string[] = ["/dealer", "/dealer/quick-quote"];
   isDealerDropdownEnabled = false;
+
+  isSidemenuExpanded: boolean = false;
+
   constructor(
     public layoutService: LayoutService,
     public authSvc: AuthenticationService,
@@ -59,10 +69,9 @@ export class AppTopBarComponent implements OnInit {
     private svc: CommonService,
     private confirmationService: ConfirmationService,
     private translateSvc: TranslateService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private datePipe: DatePipe // Inject DatePipe
   ) {}
-
-  isSidemenuExpanded: boolean = false;
 
   async ngOnInit() {
     let accessToken = sessionStorage.getItem("accessToken");
@@ -70,10 +79,10 @@ export class AppTopBarComponent implements OnInit {
       this.currencyService.initializeCurrency();
     }
 
-    this.updateServerTime();
+    this.updateServerTime(); // Initial call
 
     this.timeSubscription = timer(0, 30000).subscribe(() => {
-      this.updateServerTime();
+      this.updateServerTime(); // Refresh time
     });
 
     this.sidemenuService.sidemenuExpanded$.subscribe((expanded: boolean) => {
@@ -112,19 +121,45 @@ export class AppTopBarComponent implements OnInit {
     }, 4000);
   }
 
-  showOverlay(event: Event) {
-    this.layoutService.showOverlay(event);
+  showOverlay(event: Event, target: any) {
+    this.profileOverlay.toggle(event, target);
   }
+
   private updateServerTime() {
-    this.currentServerTimeA = this.layoutService.getCurrentTimeString();
+    const now = new Date();
+    this.currentServerTimeA = this.datePipe.transform(
+      now,
+      "h:mm a, dd MMM yyyy"
+    );
+    this.formattedDate = this.datePipe.transform(now, "dd-MMM-yyyy");
   }
+
   ngOnDestroy() {
     if (this.timeSubscription) {
       this.timeSubscription.unsubscribe();
     }
   }
 
-  logout() {}
+
+  confirmLogout() {
+    this.confirmationService.confirm({
+      message: "Are you sure you want to log out?",
+      header: "Logout",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => {
+        this.logout();
+      },
+      reject: () => {
+
+      }
+    });
+  }
+
+  logout() {
+    // this.authSvc.logout();
+    // this.toasterService.showToaster({detail: "Logged out successfully."});
+    this.router.navigate(['/authentication/login']);
+  }
 
   toggleDropdown() {
     this.isDropdownOpen = this.isDropdownOpen ? false : true;
@@ -132,7 +167,6 @@ export class AppTopBarComponent implements OnInit {
 
   async onSelect(event: any) {
     this.selectedValue = event.value;
-
     this.currentRoute = this.router.url;
     let message = "dealerChangeWarningMsg";
   }

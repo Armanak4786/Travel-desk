@@ -1,3 +1,49 @@
+<div class="main-layout-topbar">
+  <div class="layout-topbar">
+    <div class="flex">
+      <a class="layout-topbar-logo py-0">
+        <img
+          class="cursor-pointer"
+          src="assets/images/{{
+            layoutService.config.colorScheme === 'light'
+              ? 'logo-dark'
+              : 'logo-white'
+          }}.png"
+          alt="logo"
+        />
+      </a>
+      <div class="vertical-line"></div>
+    </div>
+
+    <div
+      #topbarmenu
+      class="layout-topbar-menu"
+      [ngClass]="{
+        'layout-topbar-menu-mobile-active':
+          layoutService.state.profileSidebarVisible
+      }"
+    >
+      <span class="p-input-icon-left">
+  <i class="pi pi-globe"></i>
+  <p-dropdown
+    styleClass="pill-dropdown"
+    class="languageTranslate"
+    [options]="langData"
+    [(ngModel)]="selectedLang"
+    optionLabel="name"
+    optionValue="code"
+    (onChange)="switchLanguage($event)"
+  />
+</span>
+
+      <span
+        class="flex align-items-center sm:px-2 p-0 text-sm date-wrapper mx-3"
+      >
+        {{ formattedDate }}
+      </span>
+    </div>
+  </div>
+</div>
 <ng-container *ngIf="pageType === 'login'">
   <form [formGroup]="loginForm" class="form loginForm">
     <div class="username mb-4">

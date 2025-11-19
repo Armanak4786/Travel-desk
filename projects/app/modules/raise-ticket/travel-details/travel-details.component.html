@@ -1,0 +1,30 @@
+<div class="mb-3 w-full text-xs shadow-2 p-4 pb-0 border-round">
+  <div class="text-xs col-12 font-semibold text-primary">Travel Details</div>
+  <div>
+    <div class="text-xs col-12 mb-1 mt-3 ml-5 label-color">Mode of Transport</div>
+    <p-selectButton
+    class="transport-select ml-4"
+      [options]="modeOfTransportOptions"
+      formControlName="modeOfTransport"
+      optionLabel="label"
+    >
+      <ng-template let-opt pTemplate="item">
+        <img
+          *ngIf="opt.image"
+          [src]="opt.image"
+          alt="{{ opt.label }}"
+        />
+        <span [class.ml-2]="opt.image">{{ opt.label }}</span>
+      </ng-template>
+    </p-selectButton>
+  </div>
+  <base-form
+    [formConfig]="formConfig"
+    [data]="formData"
+    [mode]="formMode"
+    (valueChanges)="handleValueChanges($event)"
+    (formButtonEvent)="handleButtonEvent($event)"
+    class="form-section"
+  >
+  </base-form>
+</div>

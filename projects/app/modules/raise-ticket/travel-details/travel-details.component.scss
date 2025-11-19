@@ -1,0 +1,23 @@
+.label-color{
+    color: #666666;
+;
+}
+
+/* Make the disabled file upload look like a clean card */
+::ng-deep .download-only {
+  .p-fileupload {
+    opacity: 1 !important; // Remove the 'disabled' transparency
+    
+    .p-fileupload-buttonbar {
+      display: none; // Hide the 'Upload/Cancel' buttons if they are visible
+    }
+    
+    // Style the content area to look like a card
+    .p-fileupload-content {
+      border: 1px solid #dee2e6;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 1rem;
+    }
+  }
+}

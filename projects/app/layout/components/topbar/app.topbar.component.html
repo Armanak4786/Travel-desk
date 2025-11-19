@@ -11,8 +11,8 @@
           }}.png"
           alt="logo"
         />
-      </a>
-      <div class="vertical-line mx-3"></div>
+        </a>
+      <div class="vertical-line "></div>
     </div>
 
     <div
@@ -23,14 +23,16 @@
           layoutService.state.profileSidebarVisible
       }"
     >
-      <span class="flex align-items-center sm:px-2 p-0 text-sm date-wrapper">
-        {{ currentServerTimeA }}</span
-      >
+      <app-language-switcher></app-language-switcher>
 
-      <div class="vertical-line mx-3"></div>
+      <span class="flex align-items-center sm:px-2 p-0 text-sm date-wrapper mx-3">
+        {{ formattedDate }}
+      </span>
+
+      <div class="vertical-line"></div>
 
       <div
-        class="bell-icon mr-3"
+        class="bell-icon mr-3 pt-2"
         [style]="{ position: 'relative' }"
         #notificationContainer
       >
@@ -51,45 +53,36 @@
         ></app-notification-bell>
       </div>
 
-      <div
-        class="bell-icon"
-        [style]="{ position: 'relative' }"
-        #notificationContainer
-      >
+      <div class="bell-icon mr-3 pt-2" [style]="{ position: 'relative' }">
         <p-avatar
-          (click)="showNotification($event)"
-          icon="{{
-            swingIcon ? 'fa-solid' : 'fa-light'
-          }} fa-cog swing-icon bell-font"
-          styleClass="bell-icon {{ swingIcon ? 'swing-icon' : '' }} {{
-            notificationValue > 0 ? '' : 'hideBadge'
-          }}"
+          icon="fa-light fa-cog bell-font"
+          styleClass="bell-icon"
           shape="circle"
-          pBadge
-          value="{{ notificationValue }}"
         />
-        <app-notification-bell
-          [target]="notificationContainer"
-        ></app-notification-bell>
       </div>
 
-      <div class="vertical-line mx-3"></div>
-      <div class="mr-3 border-round-sm">
-        <button
-          (click)="showOverlay($event)"
-          class="p-link layout-topbar-button layout-topbar-button-profile"
-        >
-          <i class="fa-solid fa-circle-user text-4xl"> </i>
-          <span>profile</span>
-        </button>
+      <div class="vertical-line ml-0"></div>
+
+      <div
+        (click)="showOverlay($event, userProfileButton)"
+        class="user-profile-button p-link"
+        #userProfileButton
+      >
+        <img
+          src="https://placehold.co/40x40/E0E0E0/757575?text=PS"
+          alt="User Avatar"
+          class="topbar-user-avatar"
+        />
+        <span class="topbar-user-name mx-2">{{
+          "Pradeep Sharma" | titlecase
+        }}</span>
+        <i class="fa-solid fa-chevron-down topbar-user-arrow"></i>
       </div>
 
-      <div class="flex justify-content-center align-items-center mr-3">
-        {{ "Pradeep Sharma" | titlecase }}
-      </div>
-
-      <app-user-profile-overlay></app-user-profile-overlay>
-      <app-language-switcher></app-language-switcher>
+      <app-user-profile-overlay
+        [lastLoginTime]="currentServerTimeA"
+        (onLogout)="confirmLogout()"
+      ></app-user-profile-overlay>
     </div>
   </div>
 </div>

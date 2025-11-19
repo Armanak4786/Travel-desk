@@ -27,7 +27,7 @@ const routes: Routes = [
       {
         path: "raise-ticket",
         loadChildren: () =>
-          import("./modules/raise-ticket/raise-ticket.module").then(
+          import("./modules/raise-ticket/raise-ticket/raise-ticket.module").then(
             (m) => m.RaiseTicketModule
           ),
       },
