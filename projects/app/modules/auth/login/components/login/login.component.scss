@@ -37,3 +37,156 @@ opacity: .9;
     color: #ffffff;
   }
 }
+
+.main-layout-topbar {
+  position: fixed;
+  height: 5rem;
+  z-index: 997;
+  left: 0;
+  top: 0;
+  width: 100%;
+  padding: 0 2rem;
+  background-color: var(--surface-card);
+  transition: left 0.2s;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05),
+    0px 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.layout-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.layout-topbar-logo {
+  display: flex;
+  align-items: center;
+  color: var(--surface-900);
+  font-size: 1.5rem;
+  font-weight: 500;
+  width: 300px;
+  border-radius: 12px;
+
+  img {
+    height: 2.5rem;
+    margin-right: 0.5rem;
+  }
+
+  // &:focus {
+  //   @include focused();
+  // }
+}
+
+.layout-topbar-menu {
+  margin: 0 0 0 auto;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center; 
+}
+.vertical-line {
+  border-left: 1px solid var(--surface-border, #e5e7eb);
+  height: 2rem; 
+  margin: 0 1.5rem;
+}
+
+.date-wrapper {
+  color: var(--text-color);
+  font-weight: 600;
+  white-space: nowrap; 
+}
+
+::ng-deep app-language-switcher {
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep {
+  .pill-dropdown.p-dropdown {
+    border-radius: 999px;
+    border: 1px solid var(--surface-border, #dfe7ef);
+    padding-left: 0.5rem; 
+  }
+  .pill-dropdown.p-dropdown .p-dropdown-label {
+    border-radius: 999px;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+  }
+
+
+  .p-input-icon-left:has(.pill-dropdown) {
+    i {
+      z-index: 1;
+      left: 0.75rem;
+      color: var(--text-color-secondary);
+    }
+    .p-dropdown {
+      padding-left: 2rem; 
+    }
+  }
+  .p-input-icon-left:has(.pill-dropdown):hover i {
+    color: var(--text-color-secondary); 
+  }
+}
+
+.main-layout-topbar.auth-mode {
+  position: relative; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background: transparent; 
+  box-shadow: none;       
+  padding: 1rem 2rem;
+  border: none;
+
+  .date-wrapper {
+    color: white; 
+  }
+  .vertical-line {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  .layout-topbar-logo img {
+    height: 40px;
+  }
+}
+
+@media (max-width: 991px) {
+  .layout-topbar-menu {
+    display: none; 
+  }
+  .main-layout-topbar.auth-mode .layout-topbar-menu {
+    display: flex; 
+  }
+}
+
+
+::ng-deep {
+
+  .p-input-icon-left:has(.languageTranslate) {
+        i.pi-globe {
+      color: black;
+      z-index: 2;
+    }
+    &:hover {
+      i.pi-globe {
+        color: black;
+      }
+    }
+  }
+  .pill-dropdown.p-dropdown {
+    border: 1px solid black;
+    border-radius: 999px;
+  }
+
+  .pill-dropdown.p-dropdown .p-dropdown-label {
+    border-radius: 999px;
+  }
+
+  .p-input-icon-left .pill-dropdown.p-dropdown {
+    padding-left: 1.5rem;
+  }
+}

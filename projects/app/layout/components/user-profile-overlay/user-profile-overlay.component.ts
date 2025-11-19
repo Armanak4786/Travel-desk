@@ -1,8 +1,14 @@
-import { Component, ViewChild } from "@angular/core";
-import { OverlayPanel } from "primeng/overlaypanel";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { LayoutService } from "../../service/app.layout.service";
 import { AuthenticationService } from "auro-ui";
 import { Router } from "@angular/router";
+import { OverlayPanel } from "primeng/overlaypanel"; 
 
 @Component({
   selector: "app-user-profile-overlay",
@@ -10,22 +16,53 @@ import { Router } from "@angular/router";
   styleUrl: "./user-profile-overlay.component.scss",
 })
 export class UserProfileOverlayComponent {
+  
   @ViewChild("overlayPanel") overlayPanel: OverlayPanel;
 
-  userName: any;
+  @Input() lastLoginTime: string = "";
+  @Output() onLogout = new EventEmitter<void>();
+
+  userName: string = "Pradeep Sharma";
+  userEmail: string = "pranalishaha@gmail.com";
 
   constructor(
-    private overlayService: LayoutService,
-    public authSvc: AuthenticationService,
     public layoutService: LayoutService,
+    public authSvc: AuthenticationService,
     public router: Router
   ) {}
 
-  ngOnInit() {}
+  public toggle(event: Event, target: any) {
+    this.overlayPanel.toggle(event, target);
+  }
 
-  logout() {}
+
+  logout() {
+    this.overlayPanel.hide();
+    this.onLogout.emit();
+  }
+
 
   changePassword() {
+    this.overlayPanel.hide(); 
     this.router.navigateByUrl("/authentication/change-password");
+  }
+
+
+  onSettingsClick() {
+    this.overlayPanel.hide();
+    // this.router.navigate(['/settings']);
+  }
+
+
+  onPreferencesClick() {
+    this.overlayPanel.hide();
+    console.log("Preferences clicked");
+    // this.router.navigate(['/preferences']);
+  }
+
+  onEditProfileClick() {
+    this.overlayPanel.hide();
+    console.log("Edit Profile clicked");
+    // this.router.navigate(['/edit-profile']);
   }
 }

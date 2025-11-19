@@ -11,6 +11,10 @@ import { AttemptExceedComponent } from "../attempt-exceed/attempt-exceed.compone
 import { LandingComponent } from "./components/landing/landing.component";
 import { RootLoginComponent } from "./components/root-login/root-login.component";
 import { LoginComponent } from "./components/login/login.component";
+import { AppFooterComponent } from "projects/app/layout/components/footer/app.footer.component";
+import { AppTopBarComponent } from "projects/app/layout/components/topbar/app.topbar.component";
+import { LanguageSwitcherComponent } from "projects/app/layout/components/language-switcher/language-switcher.component";
+
 
 @NgModule({
   imports: [
@@ -22,6 +26,7 @@ import { LoginComponent } from "./components/login/login.component";
     FormsModule,
     PasswordModule,
     AuroUiFrameWork,
+    // AppTopBarComponent
   ],
   declarations: [
     RootLoginComponent,

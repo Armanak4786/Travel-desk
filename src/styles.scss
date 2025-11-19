@@ -773,3 +773,47 @@ form {
   width: 100%;
   z-index: 4;
 }
+
+p-selectbutton.transport-select {
+
+  .p-selectbutton {
+    margin-left: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .p-button {
+    margin: 0 !important; 
+    border-radius: 8px !important; 
+    background: #ffffff;
+    border: 1px solid #e0e0e0 !important; 
+    color: #6c757d;
+    padding: 0.65rem 1.25rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      height: 16px;
+      width: 16px;
+      filter: invert(50%) sepia(13%) saturate(302%) hue-rotate(176deg) brightness(94%) contrast(88%);
+      transition: filter 0.2s;
+    }
+
+    &.p-highlight {
+      background: #0d9488;
+      border-color: #0d9488 !important; 
+      color: #ffffff;
+
+      img {
+        filter: brightness(0) invert(1);
+      }
+    }
+    &:not(.p-highlight):hover {
+      background: #f8f9fa;
+      border-color: #ced4da !important;
+    }
+  }
+}

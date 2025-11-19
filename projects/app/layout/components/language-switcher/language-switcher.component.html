@@ -1,10 +1,12 @@
-<!-- <p-dropdown
-  class="languageTranslate"
-  [options]="langData"
-  [(ngModel)]="selectedLang"
-  optionLabel="name"
-  optionValue="code"
-  (onChange)="switchLanguage($event)"
-/>
- 
-  -->
+<span class="p-input-icon-left">
+  <i class="pi pi-globe"></i>
+  <p-dropdown
+    styleClass="pill-dropdown"
+    class="languageTranslate"
+    [options]="langData"
+    [(ngModel)]="selectedLang"
+    optionLabel="name"
+    optionValue="code"
+    (onChange)="switchLanguage($event)"
+  />
+</span>

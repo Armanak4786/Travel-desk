@@ -1,9 +1,30 @@
-::ng-deep .languageTranslate .p-inputtext {
-  color: white;
-}
-::ng-deep .languageTranslate .p-dropdown .p-dropdown-trigger {
-  color: white;
-}
-::ng-deep .languageTranslate .p-dropdown {
-  background: transparent;
+
+::ng-deep {
+
+  .p-input-icon-left:has(.languageTranslate) {
+        i.pi-globe {
+      color: black;
+      z-index: 2;
+    }
+    &:hover {
+      i.pi-globe {
+        color: black;
+      }
+    }
+  }
+  /* 1. Makes the dropdown component have a pill shape */
+  .pill-dropdown.p-dropdown {
+    border: 1px solid black;
+    border-radius: 999px;
+  }
+
+  /* 2. Makes the clickable part inside also rounded */
+  .pill-dropdown.p-dropdown .p-dropdown-label {
+    border-radius: 999px;
+  }
+  
+  /* 3. Adds space on the left for the icon */
+  .p-input-icon-left .pill-dropdown.p-dropdown {
+    padding-left: 1.5rem;
+  }
 }
