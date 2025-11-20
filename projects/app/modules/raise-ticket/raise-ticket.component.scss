@@ -1,6 +1,6 @@
 :host {
   display: block;
-    ::ng-deep {
+  ::ng-deep {
     form {
       > .grid {
         gap: 2rem;
@@ -10,23 +10,22 @@
 }
 
 .raise-ticket-page {
-  padding-bottom: 60px; 
+  padding-bottom: 60px;
 }
 
 .form-section {
   margin-bottom: 12px;
 }
 
-
 /* User Info Card */
 .user-info-card {
   ::ng-deep .p-card-body {
     padding: 1rem;
   }
-  
+
   .text-sm {
     font-size: 0.9rem;
-    color: var(--text-color-secondary); 
+    color: var(--text-color-secondary);
   }
 
   .text-color {
@@ -39,7 +38,7 @@
   background-color: var(--surface-0);
   margin-top: 2rem;
   margin-bottom: 4rem;
-
+  border-radius: 8px;
 }
 
 /* "Save" Button Text Color */
@@ -57,26 +56,22 @@
     font-size: 12px;
     display: inline-block;
     width: auto;
-    margin: 0; 
+    margin: 0;
     white-space: nowrap;
   }
 
   .status-approved {
     background-color: #dcfce7 !important;
-    color: #166534 !important;            
+    color: #166534 !important;
   }
 
   .status-rejected {
-    background-color: #fee2e2 !important; 
+    background-color: #fee2e2 !important;
     color: #b91c1c !important;
   }
 
   .status-pending {
-    background-color: #ffedd5 !important; 
+    background-color: #ffedd5 !important;
     color: #9a3412 !important;
   }
 }
-
-
-
-

@@ -2,11 +2,11 @@ form {
   background-color: #212121;
   padding: 2rem;
   border-radius: 8px;
-width: 25rem ;
-opacity: .9;
+  width: 25rem;
+  opacity: 0.9;
   input {
     width: 100%;
-    background-color:#212121;
+    background-color: #212121;
     color: #ffffff;
   }
   .password {
@@ -33,7 +33,7 @@ opacity: .9;
   label {
     color: #ffffff;
   }
-  a{
+  a {
     color: #ffffff;
   }
 }
@@ -46,12 +46,10 @@ opacity: .9;
   top: 0;
   width: 100%;
   padding: 0 2rem;
-  background-color: var(--surface-card);
+  background-color: transparent;
   transition: left 0.2s;
   display: flex;
   align-items: center;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05),
-    0px 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .layout-topbar {
@@ -85,18 +83,18 @@ opacity: .9;
   padding: 0;
   list-style: none;
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 .vertical-line {
   border-left: 1px solid var(--surface-border, #e5e7eb);
-  height: 2rem; 
+  height: 2rem;
   margin: 0 1.5rem;
 }
 
 .date-wrapper {
   color: var(--text-color);
   font-weight: 600;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
 ::ng-deep app-language-switcher {
@@ -108,14 +106,13 @@ opacity: .9;
   .pill-dropdown.p-dropdown {
     border-radius: 999px;
     border: 1px solid var(--surface-border, #dfe7ef);
-    padding-left: 0.5rem; 
+    padding-left: 0.5rem;
   }
   .pill-dropdown.p-dropdown .p-dropdown-label {
     border-radius: 999px;
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
   }
-
 
   .p-input-icon-left:has(.pill-dropdown) {
     i {
@@ -124,27 +121,27 @@ opacity: .9;
       color: var(--text-color-secondary);
     }
     .p-dropdown {
-      padding-left: 2rem; 
+      padding-left: 2rem;
     }
   }
   .p-input-icon-left:has(.pill-dropdown):hover i {
-    color: var(--text-color-secondary); 
+    color: var(--text-color-secondary);
   }
 }
 
 .main-layout-topbar.auth-mode {
-  position: relative; 
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 999;
-  background: transparent; 
-  box-shadow: none;       
+  background: transparent;
+  box-shadow: none;
   padding: 1rem 2rem;
   border: none;
 
   .date-wrapper {
-    color: white; 
+    color: white;
   }
   .vertical-line {
     border-color: rgba(255, 255, 255, 0.3);
@@ -156,18 +153,16 @@ opacity: .9;
 
 @media (max-width: 991px) {
   .layout-topbar-menu {
-    display: none; 
+    display: none;
   }
   .main-layout-topbar.auth-mode .layout-topbar-menu {
-    display: flex; 
+    display: flex;
   }
 }
 
-
 ::ng-deep {
-
   .p-input-icon-left:has(.languageTranslate) {
-        i.pi-globe {
+    i.pi-globe {
       color: black;
       z-index: 2;
     }

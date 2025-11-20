@@ -1,4 +1,3 @@
-
 <div class="raise-ticket-page p-4">
   <div class="breadcrumb form-section">
     <a href="/dashboard"><span class="text-color-secondary">Home /</span></a>
@@ -7,47 +6,53 @@
 
   <gen-card class="user-info-card form-section">
     <ng-container body>
-      <div class="p-fluid flex justify-content-between align-items-center flex-wrap gap-4">
+      <div
+        class="p-fluid flex justify-content-between align-items-center flex-wrap gap-4"
+      >
         <div class="flex align-items-center">
-          <img src="https://placehold.co/40x40/E0E0E0/757575?text=PS" alt="User Avatar" class="border-circle mr-3">
+          <img
+            src="https://placehold.co/40x40/E0E0E0/757575?text=PS"
+            alt="User Avatar"
+            class="border-circle mr-3"
+          />
           <div class="text-sm">
             Employee Name:
-            <span class="font-bold text-color">{{ userInfo.name }}</span>
+            <span class="font-bold text-color">{{ userInfo?.name }}</span>
           </div>
         </div>
         <div class="text-sm">
           Employee ID:
-          <span class="font-bold text-color">{{ userInfo.employeeId }}</span>
+          <span class="font-bold text-color">{{ userInfo?.employeeId }}</span>
         </div>
         <div class="text-sm">
           Department:
-          <span class="font-bold text-color">{{ userInfo.department }}</span>
+          <span class="font-bold text-color">{{ userInfo?.department }}</span>
         </div>
         <div class="text-sm">
           Grade:
-          <span class="font-bold text-color">{{ userInfo.grade }}</span>
+          <span class="font-bold text-color">{{ userInfo?.grade }}</span>
         </div>
         <div class="text-sm">
           Designation:
-          <span class="font-bold text-color">{{ userInfo.designation }}</span>
+          <span class="font-bold text-color">{{ userInfo?.designation }}</span>
         </div>
       </div>
     </ng-container>
   </gen-card>
 
   <div>
-        <app-travel-type></app-travel-type>
+    <app-travel-type></app-travel-type>
   </div>
   <div>
-        <app-travel-details></app-travel-details>
-  </div>
-    <div>
-        <app-travel-amount></app-travel-amount>
+    <app-travel-details></app-travel-details>
   </div>
   <div>
-        <app-travel-visa></app-travel-visa>
+    <app-travel-amount></app-travel-amount>
   </div>
-<gen-card headerText="Approver" class="mb-3">
+  <div>
+    <app-travel-visa></app-travel-visa>
+  </div>
+  <gen-card headerText="Approver" class="mb-3">
     <ng-container body>
       <gen-table
         [columns]="approverColumns"
@@ -60,9 +65,13 @@
     </ng-container>
   </gen-card>
 
-  <div class="action-footer-bar p-3 surface-0 shadow-2 form-section">
+  <div class="action-footer-bar p-2 surface-0 shadow-2 form-section">
     <div class="flex justify-content-between align-items-center">
-      <a (click)="onCancel()" class="p-button-text text-primary font-bold cursor-pointer p-3">Cancel</a>
+      <a
+        (click)="onCancel()"
+        class="p-button-text text-primary font-bold cursor-pointer p-3"
+        >Cancel</a
+      >
       <div class="flex gap-2">
         <gen-button
           [btnLabel]="'Save'"
@@ -70,13 +79,8 @@
           class="reset-btn-color"
           (onClick)="onSave()"
         ></gen-button>
-        <gen-button
-          [btnLabel]="'Submit'"
-          (onClick)="onSubmit()"
-        ></gen-button>
+        <gen-button [btnLabel]="'Submit'" (onClick)="onSubmit()"></gen-button>
       </div>
-
     </div>
   </div>
-
 </div>

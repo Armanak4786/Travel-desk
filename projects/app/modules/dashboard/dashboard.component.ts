@@ -20,7 +20,6 @@ export class DashboardComponent implements OnInit {
   yearOptions: any[] = [];
   selectedYear: number;
 
-
   first: number = 0;
   rows: number = 10;
   totalRecord: number = 0;
@@ -42,7 +41,6 @@ export class DashboardComponent implements OnInit {
     this.loadMockData();
   }
 
-
   defineColumns() {
     this.columnsAsset = [
       { field: "requestNo", headerName: "Request No", sortable: true },
@@ -50,7 +48,7 @@ export class DashboardComponent implements OnInit {
         field: "travelDate",
         headerName: "Travel Date",
         format: "#date",
-        dateFormat: "dd MMM yyyy", 
+        dateFormat: "dd MMM yyyy",
         sortable: true,
       },
       {
@@ -58,7 +56,7 @@ export class DashboardComponent implements OnInit {
         headerName: "Return Date",
         sortable: true,
         format: "#date",
-        dateFormat: "dd MMM yyyy", 
+        dateFormat: "dd MMM yyyy",
       },
       { field: "type", headerName: "Type", sortable: true },
       { field: "countryCity", headerName: "Country / City", sortable: true },
@@ -66,20 +64,19 @@ export class DashboardComponent implements OnInit {
       { field: "requestStatus", headerName: "Request Status", sortable: true },
       { field: "tripStatus", headerName: "Trip Status", sortable: true },
       {
-        field: "actions", 
+        field: "actions",
         headerName: "Action",
         format: "#icons",
-        actions: "onCellClicked", 
+        actions: "onCellClicked",
       },
     ];
   }
-
 
   loadMockData() {
     const mockData = [
       {
         requestNo: "730827308981",
-        travelDate: "2025-10-04T00:00:00Z", 
+        travelDate: "2025-10-04T00:00:00Z",
         returnDate: "2025-10-04T00:00:00Z",
         type: "Domestic",
         countryCity: "India / Noida",
@@ -149,9 +146,9 @@ export class DashboardComponent implements OnInit {
       },
     ];
     this.allTravelRequests = mockData;
-    this.filteredRequests = this.allTravelRequests; 
+    this.filteredRequests = this.allTravelRequests;
     this.totalRecord = this.filteredRequests.length;
-    this.updatePagedData(); 
+    this.updatePagedData();
   }
 
   onStatusTabChange(status: string) {
@@ -178,41 +175,25 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  onYearChange(event: any) {
-    console.log("Selected year:", this.selectedYear);
-  }
-
-
   refreshData() {
-    console.log("Refreshing data...");
-    this.loadMockData(); 
+    this.loadMockData();
   }
 
-
-  openFilters() {
-    
-  }
+  openFilters() {}
 
   raiseNewRequest() {
     this.router.navigate(["/raise-ticket"]);
-    console.log("Navigating to new request page...");
   }
 
-
   onCellClick(event: any) {
-    console.log("Cell click event:", event);
     const { actionName, rowData } = event;
 
     if (actionName === "edit") {
-
     } else if (actionName === "view") {
-
     }
   }
 
-
   onPageChange(event: any) {
-    console.log("Page change event:", event);
     this.first = event.first;
     this.rows = event.rows;
     this.updatePagedData();

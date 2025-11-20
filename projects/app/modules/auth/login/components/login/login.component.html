@@ -24,17 +24,17 @@
       }"
     >
       <span class="p-input-icon-left">
-  <i class="pi pi-globe"></i>
-  <p-dropdown
-    styleClass="pill-dropdown"
-    class="languageTranslate"
-    [options]="langData"
-    [(ngModel)]="selectedLang"
-    optionLabel="name"
-    optionValue="code"
-    (onChange)="switchLanguage($event)"
-  />
-</span>
+        <i class="pi pi-globe"></i>
+        <p-dropdown
+          styleClass="pill-dropdown"
+          class="languageTranslate"
+          [options]="langData"
+          [(ngModel)]="selectedLang"
+          optionLabel="name"
+          optionValue="code"
+          (onChange)="switchLanguage($event)"
+        />
+      </span>
 
       <span
         class="flex align-items-center sm:px-2 p-0 text-sm date-wrapper mx-3"

@@ -16,7 +16,6 @@ export class WelcomeComponent implements OnInit {
         this.oidcSecurityService
           .checkAuth()
           .subscribe(({ isAuthenticated }) => {
-            console.log("welcome isAuthenticated", isAuthenticated);
             if (isAuthenticated) {
               this.router.navigate(["/authentication/"]);
             } else {

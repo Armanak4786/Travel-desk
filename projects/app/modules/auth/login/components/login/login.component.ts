@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from "@angular/core";
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.scss",
-    providers: [DatePipe], 
+  providers: [DatePipe],
 })
 export class LoginComponent implements OnInit {
   pageType: string = "login";
@@ -25,29 +25,28 @@ export class LoginComponent implements OnInit {
   password!: string;
   hidePassword: boolean = true;
   loginForm: FormGroup;
-  formattedDate:string;
-  selectedLang:string;
+  formattedDate: string;
+  selectedLang: string;
 
   constructor(
     public layoutService: LayoutService,
     private fb: FormBuilder,
     private router: Router,
-     private datePipe: DatePipe ,
-         private translate: LanguageService,
-         private cdr: ChangeDetectorRef
+    private datePipe: DatePipe,
+    private translate: LanguageService,
+    private cdr: ChangeDetectorRef
   ) {
-        this.translate.setDefaultLanguage("en");
+    this.translate.setDefaultLanguage("en");
   }
 
   ngOnInit(): void {
-    console.log("Version:15.1");
     this.loginForm = this.fb.group({
       username: ["", [Validators.required]],
       password: ["", [Validators.required]],
       remember: [false, [Validators.requiredTrue]],
     });
-    this.formattedDate = this.datePipe.transform(new Date,"dd-MMM-yyyy");
-        this.selectedLang = "en";
+    this.formattedDate = this.datePipe.transform(new Date(), "dd-MMM-yyyy");
+    this.selectedLang = "en";
     this.translate.useLanguage("en_US");
   }
 
@@ -65,7 +64,7 @@ export class LoginComponent implements OnInit {
     }
     this.router.navigate(["/dashboard"]);
   }
-    switchLanguage(language) {
+  switchLanguage(language) {
     this.translate.useLanguage(language.value.toString());
     this.cdr.detectChanges();
   }

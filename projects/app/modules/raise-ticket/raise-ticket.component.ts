@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 // Import your 'auro-ui' types. Make sure the path is correct.
-import { BaseFormComponent, GenericFormConfig, Mode,CommonService } from "auro-ui";
-import { Validators } from "@angular/forms";
-import { TravelTypeComponent } from "../travel-type/travel-type.component";
+import {
+  BaseFormComponent,
+  GenericFormConfig,
+  Mode,
+  CommonService,
+} from "auro-ui";
 @Component({
   selector: "app-raise-ticket",
   templateUrl: "./raise-ticket.component.html",
@@ -13,7 +16,7 @@ export class RaiseTicketComponent implements OnInit {
     throw new Error("Method not implemented.");
   }
 
-  @ViewChild(BaseFormComponent) baseForm: BaseFormComponent; 
+  @ViewChild(BaseFormComponent) baseForm: BaseFormComponent;
   formConfig: GenericFormConfig;
   formMode: Mode = Mode.create;
   formData: any = {
@@ -23,7 +26,7 @@ export class RaiseTicketComponent implements OnInit {
         modeOfTransport: "air",
       },
     ],
-  }; 
+  };
   // --- User Info (Mock Data) ---
 
   userInfo = {
@@ -32,15 +35,23 @@ export class RaiseTicketComponent implements OnInit {
     department: "Banking",
     grade: "10",
     designation: "Sr. Associate Manager",
-  }; 
+  };
   // --- select Options (Mock Data) ---
   modeOfTransportOptions: any[] = [
-      { label: 'Air', value: 'air', image: 'assets/images/transport/airplaneTilt.svg' },
-      { label: 'Train', value: 'train', image: 'assets/images/transport/train.svg' },
-      { label: 'Bus', value: 'bus', image: 'assets/images/transport/bus.svg' },
-      { label: 'Cab', value: 'cab', image: 'assets/images/transport/cab.svg' },
-      { label: 'Others', value: 'others', image: '' }
-    ];
+    {
+      label: "Air",
+      value: "air",
+      image: "assets/images/transport/airplaneTilt.svg",
+    },
+    {
+      label: "Train",
+      value: "train",
+      image: "assets/images/transport/train.svg",
+    },
+    { label: "Bus", value: "bus", image: "assets/images/transport/bus.svg" },
+    { label: "Cab", value: "cab", image: "assets/images/transport/cab.svg" },
+    { label: "Others", value: "others", image: "" },
+  ];
 
   // --- Approver Info (Mock Data) ---
   approverInfo = [
@@ -62,33 +73,34 @@ export class RaiseTicketComponent implements OnInit {
     { field: "level", headerName: "Level" },
     { field: "name", headerName: "Manager Name (Designation)" },
     { field: "department", headerName: "Department" },
-    { field: "status", 
+    {
+      field: "status",
       headerName: "Status",
       type: "html",
-    format: (row) => {
-      const status = (row.status || "").toLowerCase();
-      let statusClass = "";
-      if (status === "approved") {
-        statusClass = "status-approved";
-      } else if (status === "rejected") {
-        statusClass = "status-rejected";
-      } else {
-        statusClass = "status-pending";
-      }
-      return `<span class="status-badge ${statusClass}">${row.status}</span>`;
-    }
-  }
+      format: (row) => {
+        const status = (row.status || "").toLowerCase();
+        let statusClass = "";
+        if (status === "approved") {
+          statusClass = "status-approved";
+        } else if (status === "rejected") {
+          statusClass = "status-rejected";
+        } else {
+          statusClass = "status-pending";
+        }
+        return `<span class="status-badge ${statusClass}">${row.status}</span>`;
+      },
+    },
   ];
   approverTableData: any[] = [];
 
-  constructor(public svc: CommonService,private el: ElementRef) {
+  constructor(public svc: CommonService, private el: ElementRef) {
     this.svc = svc;
   }
 
   ngOnInit(): void {
     this.approverTableData = this.approverInfo.map((approver) => ({
       ...approver,
-      status:approver.status
+      status: approver.status,
       // status: {
       //   value: approver.status,
       //   severity: 'warning',
@@ -96,43 +108,25 @@ export class RaiseTicketComponent implements OnInit {
     }));
 
     this.formConfig = {
-      api: "", 
+      api: "",
       cardType: "non-border",
       autoResponsive: true,
-    fields:[]
-
+      fields: [],
     };
   }
 
   onFormButtonEvent(event: any) {
     if (event.field.name === "addTravelSegment") {
-
     }
   }
-// applyStatusColors() {
-//     setTimeout(() => {
-//       const cells = this.el.nativeElement.querySelectorAll('td.status-column');
-
-//       cells.forEach((cell: HTMLElement) => {
-//         const statusText = cell.innerText.trim().toLowerCase();
-//         cell.classList.remove('status-approved', 'status-rejected', 'status-pending');
-//         if (statusText === 'approved') {
-//           cell.classList.add('status-approved');
-//         } else if (statusText === 'rejected') {
-//           cell.classList.add('status-rejected');
-//         } else {
-//           cell.classList.add('status-pending');
-//         }
-//       });
-//     }, 200);
-//   }
   onCancel(): void {
-         this.svc?.ui?.showOkDialog(
+    this.svc?.ui?.showOkDialog(
       "Any unsaved changes will be lost. Are you sure you want to cancel?",
       "Cancel this ticket ",
       () => {
-    this.svc.router.navigateByUrl("/dashboard");
-      })
+        this.svc.router.navigateByUrl("/dashboard");
+      }
+    );
     this.baseForm.form.reset({
       travelType: "International",
     });

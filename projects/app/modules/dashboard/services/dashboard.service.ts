@@ -208,7 +208,6 @@ export class DashboardService {
     try {
       return jwtDecode(token);
     } catch (error) {
-      // console.error('Invalid Token', error);
       return null;
     }
   }
