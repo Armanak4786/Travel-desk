@@ -31,6 +31,20 @@ const routes: Routes = [
             (m) => m.RaiseTicketModule
           ),
       },
+      {
+        path: "travel-details",
+        loadChildren: () =>
+          import("./modules/travel-details/travel-details.module").then(
+            (m) => m.TravelDetailsModule
+          ),
+      },
+      {
+        path: "reimbursement-details",
+        loadChildren: () =>
+          import("./modules/travel-details/travel-details.module").then(
+            (m) => m.TravelDetailsModule
+          ),
+      },
     ],
   },
   {

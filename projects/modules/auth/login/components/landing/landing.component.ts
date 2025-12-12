@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { LayoutService } from "projects/app/layout/service/app.layout.service";
+import { LayoutService } from "projects/layout/service/app.layout.service";
 @Component({
   selector: "app-landing",
   templateUrl: "./landing.component.html",

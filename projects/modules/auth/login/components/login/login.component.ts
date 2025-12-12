@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { LayoutService } from "projects/app/layout/service/app.layout.service";
+import { LayoutService } from "projects/layout/service/app.layout.service";
 import { DatePipe } from "@angular/common";
 import { LanguageService } from "auro-ui";
 import { ChangeDetectorRef } from "@angular/core";

@@ -9,7 +9,7 @@ import { NotfoundComponent } from "auro-ui";
         {
           path: "",
           loadChildren: () =>
-            import("../../projects/app/app-core.module").then(
+            import("../../projects/app-core.module").then(
               (m) => m.CoreAppModule
             ),
         },
