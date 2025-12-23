@@ -1,0 +1,143 @@
+$primary-teal: #2FA9A9;
+
+:host ::ng-deep {
+
+    // --- 1. Dropdowns & Inputs (Underline Style) ---
+    .underline-dropdown {
+        background: transparent;
+        border-bottom: 1px solid #d1d5db;
+        border-radius: 0;
+        .p-inputtext { padding-left: 0; font-weight: 500; }
+        .p-dropdown-trigger { width: 1.5rem; color: #333; }
+        &:not(.p-disabled).p-focus { border-bottom-color: $primary-teal; box-shadow: none; }
+    }
+
+    .underline-input {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #d1d5db;
+        border-radius: 0;
+        padding-left: 0;
+        &:focus { border-bottom-color: $primary-teal !important; box-shadow: none !important; }
+    }
+
+    // --- 2. Calendar (No Box, Just Underline) ---
+.underline-icon-calendar {
+
+  /* NORMAL STATE */
+  &.p-calendar {
+    border: none !important;
+    border-bottom: 1px solid #d1d5db !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    padding-bottom: 0;
+
+    &:hover {
+      border-bottom-color: $primary-teal !important;
+    }
+  }
+
+  .p-inputtext {
+    border: none !important;
+    background: transparent !important;
+    padding-left: 0 !important;
+  }
+
+  .p-datepicker-trigger {
+    border: none !important;
+    background: transparent !important;
+    color: #6b7280;
+    width: 2rem;
+
+    &:hover {
+      color: $primary-teal !important;
+    }
+  }
+
+  /* 🔒 DISABLED STATE */
+  &.p-disabled,
+  &.p-calendar:has(.p-inputtext:disabled) {
+
+    /* remove underline */
+    border-bottom: none !important;
+
+    /* hide calendar icon */
+    .p-datepicker-trigger {
+      display: none !important;
+    }
+
+    /* optional: muted text */
+    .p-inputtext {
+            border: none !important; background: transparent !important; padding-left: 0 !important;
+    }
+  }
+}
+
+    // --- 3. Custom File Upload Styles ---
+    
+    // State A: "Upload" Button (Dashed Border)
+    .dashed-upload-btn {
+        background: transparent !important;
+        border: 1px dashed $primary-teal !important;
+        color: $primary-teal !important;
+        border-radius: 20px; // Pill shape
+        padding: 0.4rem 1rem;
+        font-size: 0.75rem;
+        
+        .p-button-icon { color: $primary-teal !important; font-size: 0.8rem; }
+        &:hover { background: rgba(47, 169, 169, 0.05) !important; }
+    }
+
+    // State B: Uploaded File Chip (Solid Grey)
+    .file-chip {
+        background: #E0F2F1; // Light Teal/Grey background
+        color: #00695C;
+        border-radius: 20px;
+        padding: 0.4rem 1rem;
+        font-size: 0.75rem;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        
+        // Remove icon on hover if needed (optional)
+        i { font-size: 0.8rem; margin-left: 0.5rem; cursor: pointer; }
+    }
+}
+
+/* Only apply these styles when the form or inputs are disabled */
+:host ::ng-deep {
+  
+  /* 1. TEXT INPUTS & TEXTAREAS */
+  input:disabled,
+  textarea:disabled,
+  .p-inputtext:disabled {
+    opacity: 1 !important;              /* Make text fully visible (not faded) */
+    color: #343a40 !important;          /* Dark gray/black text color */
+    background: transparent !important; /* Remove gray background */
+    border: none !important;            /* Remove borders/underlines */
+    box-shadow: none !important;        /* Remove focus glow */
+    padding-left: 0 !important;         /* Optional: Align text to left edge */
+    cursor: default !important;         /* Remove 'blocked' mouse cursor */
+  }
+
+  /* 2. DROPDOWNS */
+  .p-dropdown.p-disabled {
+    opacity: 1 !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .p-dropdown.p-disabled .p-dropdown-label {
+    color: #343a40 !important;          /* Dark text for selected value */
+    padding-left: 0 !important;
+  }
+
+  /* Hide the Dropdown Arrow */
+  .p-dropdown.p-disabled .p-dropdown-trigger {
+    display: none !important;
+  }
+}
+
+::ng-deep .input-text-left input{   
+    text-align: left !important;
+}

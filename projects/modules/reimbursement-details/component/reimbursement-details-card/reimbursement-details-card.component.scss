@@ -1,0 +1,9 @@
+::ng-deep .no-underline input {
+//   border: none !important;
+  border-bottom: none !important;
+//   outline: none !important;
+}
+
+::ng-deep .band-text-left .p-inputnumber input {   
+    text-align: left;
+}
