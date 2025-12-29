@@ -1,0 +1,26 @@
+/* ===============================
+   BASEFORM – NO UNDERLINE MODE
+   =============================== */
+
+.no-underline-form {
+
+  /* DISABLED STATE – keep text readable */
+  .p-disabled,
+  .p-inputtext:disabled {
+    color: #374151 !important;
+    opacity: 1 !important;
+    cursor: default !important;
+  }
+
+  /* REMOVE FOCUS RING */
+  .p-focus,
+  .p-inputtext:focus {
+    box-shadow: none !important;
+  }
+
+  /* RADIO / SELECTBUTTON (Travel Type) */
+  .p-radiobutton-box,
+  .p-selectbutton .p-button {
+    box-shadow: none !important;
+  }
+}

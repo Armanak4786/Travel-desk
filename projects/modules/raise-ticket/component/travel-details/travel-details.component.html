@@ -1,30 +1,312 @@
-<div class="mb-3 w-full text-xs shadow-2 p-4 pb-0 border-round">
-  <div class="text-xs col-12 font-semibold text-primary">Travel Details</div>
-  <div>
-    <div class="text-xs col-12 mb-1 mt-3 ml-5 label-color">Mode of Transport</div>
-    <p-selectButton
-    class="transport-select ml-4"
-      [options]="modeOfTransportOptions"
-      formControlName="modeOfTransport"
-      optionLabel="label"
+<form
+  [formGroup]="travelForm"
+  class="p-4 bg-white border-200 mb-3 shadow-2 border-round"
+>
+  <div class="mb-3 font-bold text-teal-700 text-sm">Travel Details</div>
+
+  <div formArrayName="travelDetails">
+    <div
+      *ngFor="
+        let item of travelDetails.controls;
+        let i = index;
+        let last = last
+      "
+      [formGroupName]="i"
+      class="mb-5"
     >
-      <ng-template let-opt pTemplate="item">
-        <img
-          *ngIf="opt.image"
-          [src]="opt.image"
-          alt="{{ opt.label }}"
-        />
-        <span [class.ml-2]="opt.image">{{ opt.label }}</span>
-      </ng-template>
-    </p-selectButton>
+      <div
+        class="border-1 border-teal-500 border-round-xl overflow-hidden"
+        style="background-color: #f7ffff"
+      >
+        <div class="p-3">
+          <label class="block text-xs text-500 mb-2">Mode of Transport</label>
+          <p-selectButton
+            [options]="modeOfTransportOptions"
+            formControlName="modeOfTransport"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="transport-group"
+          >
+            <ng-template let-item pTemplate>
+              <img
+                *ngIf="item.image"
+                [src]="item.image"
+                class="mr-2 transport-icon"
+                style="width: 16px; height: 16px"
+              />
+              <span class="text-sm font-medium">{{ item.label }}</span>
+            </ng-template>
+          </p-selectButton>
+        </div>
+
+        <div
+          class="flex flex-column border-300 border-1 border-round mx-3 xl:flex-row align-items-stretch"
+        >
+          <div
+            class="flex-none w-full xl:w-16rem p-3 border-bottom-1 xl:border-bottom-none xl:border-right-1 border-300 relative"
+          >
+            <label class="block text-xs text-500 mb-1"
+              >From<span class="text-red-500">*</span></label
+            >
+            <p-dropdown
+              [options]="cityOptions"
+              formControlName="fromCity"
+              placeholder="Select"
+              styleClass="w-full border-none p-0 mt-2"
+              inputStyleClass="text-lg text-900"
+              [filter]="true"
+              appendTo="body"
+            >
+              <ng-template pTemplate="selectedItem" let-selected>
+                <div class="flex flex-column">
+                  <span class="text-xl text-900">{{ selected.label }}</span>
+                  <span class="text-xs mt-4 text-500 text-overflow-ellipsis">{{
+                    selected.subLabel
+                  }}</span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="item" let-opt>
+                <div class="flex flex-column">
+                  <span class="font-bold">{{ opt.label }}</span>
+                  <span class="text-xs">{{ opt.subLabel }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+
+            <div *ngIf="!viewOnly"
+              class="absolute hidden xl:flex align-items-center justify-content-center bg-white border-1 border-300 border-circle cursor-pointer hover:surface-100 transition-colors shadow-1"
+              style="
+                width: 2rem;
+                height: 2rem;
+                right: -1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+              "
+              (click)="swapLocations(i)"
+            >
+              <i class="pi pi-arrow-right-arrow-left text-teal-500 text-sm"></i>
+            </div>
+          </div>
+
+          <div
+            class="flex-none w-full xl:w-16rem p-3 border-bottom-1 xl:border-bottom-none xl:border-right-1 border-300 pl-4"
+          >
+            <label class="block text-xs text-500 mb-1"
+              >To<span class="text-red-500">*</span></label
+            >
+            <p-dropdown
+              [options]="cityOptions"
+              formControlName="toCity"
+              placeholder="Select"
+              styleClass="w-full border-none p-0 text-xl text-900 shadow-none mt-2"
+              inputStyleClass="text-lg text-900"
+              [filter]="true"
+              appendTo="body"
+            >
+              <ng-template pTemplate="selectedItem" let-selected>
+                <div class="flex flex-column">
+                  <span class="text-xl text-900">{{ selected.label }}</span>
+                  <span class="text-xs mt-4 text-500 text-overflow-ellipsis">{{
+                    selected.subLabel
+                  }}</span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="item" let-opt>
+                <div class="flex flex-column">
+                  <span class="font-bold">{{ opt.label }}</span>
+                  <span class="text-xs">{{ opt.subLabel }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+
+          <div
+            class="flex-1 p-3 border-bottom-1 xl:border-bottom-none xl:border-right-1 border-300"
+          >
+            <label class="block text-xs text-500 mb-1"
+              >Departure Date & Time<span class="text-red-500">*</span></label
+            >
+            <div class="flex align-items-center justify-content-between">
+              <p-calendar
+                formControlName="departureDate"
+                dateFormat="d M y - D"
+                placeholder="Select Date"
+                styleClass="w-full border-none p-0 custom-cal mt-2"
+                inputStyleClass="text-lg text-900"
+                [showIcon]="true"
+                icon="pi pi-calendar"
+                appendTo="body"
+              ></p-calendar>
+            </div>
+            <p-dropdown
+              [options]="timeOptions"
+              formControlName="departureTime"
+              placeholder="Select time"
+              styleClass="w-full border-none p-0 text-xs mt-2 mt-4"
+              inputStyleClass="text-lg font-light"
+              appendTo="body"
+            ></p-dropdown>
+          </div>
+
+          <div
+            class="flex-1 p-3 border-bottom-1 xl:border-bottom-none xl:border-right-1 border-300"
+          >
+            <label class="block text-xs text-500 mb-1"
+              >Return Date & Time<span class="text-red-500">*</span></label
+            >
+            <div class="flex align-items-center justify-content-between">
+              <p-calendar
+                formControlName="returnDate"
+                dateFormat="d M y - D"
+                placeholder="Select Date"
+                styleClass="w-full border-none p-0 custom-cal mt-2"
+                inputStyleClass="text-lg text-900"
+                [showIcon]="true"
+                icon="pi pi-calendar"
+                appendTo="body"
+              ></p-calendar>
+            </div>
+            <p-dropdown
+              [options]="timeOptions"
+              formControlName="returnTime"
+              placeholder="Select time"
+              styleClass="w-full border-none shadow-none p-0 text-xs mt-4"
+              appendTo="body"
+            ></p-dropdown>
+          </div>
+
+          <div
+            class="flex-1 p-3 border-bottom-1 xl:border-bottom-none xl:border-right-1 border-300"
+          >
+            <div class="flex align-items-center">
+              <label class="text-xs text-500 mr-2 mb-1">Accommodation</label>
+              <p-inputSwitch
+                formControlName="isAccommodationRequired"
+                styleClass="compact-toggle"
+              ></p-inputSwitch>
+              <span
+                class="text-xs font-bold text-teal-500 ml-2"
+                *ngIf="item.get('isAccommodationRequired')?.value"
+                >Yes</span
+              >
+            </div>
+
+            <ng-container *ngIf="item.get('isAccommodationRequired')?.value">
+              <input
+                type="text"
+                pInputText
+                formControlName="accommodationLocation"
+                class="w-full border-none shadow-none p-0 text-xl text-900 mt-1"
+                placeholder="Enter Location"
+              />
+            </ng-container>
+            <div
+              *ngIf="!item.get('isAccommodationRequired')?.value"
+              class="text-sm text-400 mt-2 font-italic"
+            >
+              Not required
+            </div>
+          </div>
+
+          <div
+            class="flex-none p-3 w-full xl:w-10rem flex flex-column"
+            *ngIf="item.get('isAccommodationRequired')?.value"
+          >
+            <label class="block text-sm text-500 mb-2">Nights</label>
+
+            <p-inputNumber
+              formControlName="nights"
+              [showButtons]="true"
+              buttonLayout="horizontal"
+              inputId="nights"
+              [min]="1"
+              styleClass="nights-input border-none"
+              inputStyleClass="w-3rem text-center border-none font-bold text-lg p-0 text-900"
+              incrementButtonIcon="pi pi-plus"
+              decrementButtonIcon="pi pi-minus"
+            >
+            </p-inputNumber>
+
+            <div class="text-sm text-900 mt-2 font-medium white-space-nowrap">
+              {{ getDurationText(item.get("nights")?.value) }}
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-3 m-2">
+          <div class="flex align-items-center gap-1 m-2 w-full flex-wrap">
+            <div
+              *ngIf="currentRole === 'TravelDeskAdmin'"
+              class="dashed-upload-btn cursor-pointer px-3 py-2 border-1 border-dashed border-teal-500 border-round hover:bg-teal-50 transition-colors flex align-items-center gap-2"
+              (click)="fileInput.click()"
+            >
+              <i class="pi pi-upload text-teal-500"></i>
+              <span class="text-teal-500 font-medium text-sm"
+                >Upload Tickets/Visa/Hotel Booking Documents</span
+              >
+
+              <input
+                #fileInput
+                type="file"
+                multiple
+                (change)="onFileSelect($event, i)"
+                style="display: none"
+              />
+            </div>
+
+            <div
+              *ngFor="
+                let file of item.get('uploadedDocuments')?.value;
+                let fileIdx = index
+              "
+              class="file-chip bg-teal-50 border-round px-3 py-2 flex align-items-center gap-2"
+            >
+              <span class="text-teal-900 font-bold text-sm">{{
+                file.name
+              }}</span>
+
+              <i
+                class="pi pi-download text-teal-600 cursor-pointer hover:text-teal-800 text-sm"
+                (click)="downloadFile(file)"
+              ></i>
+
+              <i
+                *ngIf="currentRole !== 'Employee'"
+                class="pi pi-times text-teal-600 cursor-pointer hover:text-red-500 text-sm ml-1"
+                (click)="removeDocument(i, fileIdx)"
+              ></i>
+            </div>
+
+            <div
+              *ngIf="
+                currentRole === 'Employee' &&
+                (!item.get('uploadedDocuments')?.value ||
+                  item.get('uploadedDocuments')?.value.length === 0)
+              "
+              class="text-sm text-500 italic border-1 border-dashed border-300 p-2 border-round bg-gray-50"
+            >
+              No documents uploaded by Travel Desk yet.
+            </div>
+            <button
+              *ngIf="!travelForm.disabled && travelDetails.length > 1"
+              pButton
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger p-button-text ml-auto"
+              (click)="removeTravelItem(i)"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+        <div class="mt-4" *ngIf="!viewOnly">
+        <button
+          pButton
+          type="button"
+          icon="pi pi-plus"
+          label="Add More"
+          class="p-button-text text-teal-600 font-bold hover:bg-teal-50 border-round-lg"
+          (click)="addTravelItem()"
+        ></button>
+      </div>
   </div>
-  <base-form
-    [formConfig]="formConfig"
-    [data]="formData"
-    [mode]="formMode"
-    (valueChanges)="handleValueChanges($event)"
-    (formButtonEvent)="handleButtonEvent($event)"
-    class="form-section"
-  >
-  </base-form>
-</div>
+</form>

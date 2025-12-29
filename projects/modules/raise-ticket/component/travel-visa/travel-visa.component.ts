@@ -1,79 +1,70 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { BaseFormComponent, GenericFormConfig, Mode } from 'auro-ui';
-import { Validators } from '@angular/forms';
-import { firstValueFrom } from 'rxjs';
+import { Component, EventEmitter, OnInit, Output,Input } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-travel-visa',
-  templateUrl: './travel-visa.component.html'
+  templateUrl: './travel-visa.component.html',
+  styleUrls: ['./travel-visa.component.scss']
 })
 export class TravelVisaComponent implements OnInit {
-  @ViewChild(BaseFormComponent) baseForm: BaseFormComponent;
   @Output() valueChanges = new EventEmitter<any>();
-  @Output() formButtonEvent = new EventEmitter<any>();
+  @Input() viewOnly: boolean = false;
+  @Input() currentRole: string = '';
+  visaForm: FormGroup;
+  uploadedFiles: any[] = [];
 
-  formMode: Mode = Mode.create;
-  formData: any = { travelType: 'International' };
+  constructor(private fb: FormBuilder) {}
 
-  visaOptions: any[] = [
-    { label: "Yes", value: true },
-    { label: "No", value: false },
-  ];
-  formConfig: GenericFormConfig = {
-    api: '',
-    cardType: 'non-border',
-    autoResponsive: true,
-    sections: [
-        {
-          sectionName: "visaSection",
-          cols: 12,
-          headerTitle: "Visa Details",
-          headerClass: "text-xs col-12 font-semibold text-primary",
-          sectionClass: " mb-3 w-full text-xs shadow-2 p-4 pb-0 border-round",
-        },
-    ],
-    fields:[
-              {
-          type: "select",
-          name: "visaRequired",
-          label: "Visa Required",
-          sectionName: "visaSection",
-          labelClass: "text-xs",
-          inputClass: "gen-select mb-3",
-          alignmentType: "vertical",
-          options: this.visaOptions,
-          placeholder: "-- Select --",
-          validators: [Validators.required],
-          className: "col-12 md:col-12 lg:col-3 align-items-center",
-        },
-        {
-          type: "files",
-          name: "passportFile",
-          label: "Passport",
-          sectionName: "visaSection",
-          className: "col-12 md:col-4 lg:col-4 mt-3",
-        },
-    ]
-  };
+  ngOnInit(): void {
+    this.visaForm = this.fb.group({
+      documents: [[]]
+    });
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  // Parent helpers
-  getValue(): any {
-    return this.baseForm ? this.baseForm.form.getRawValue() : this.formData;
+    this.visaForm.valueChanges.subscribe(val => {
+      this.valueChanges.emit(val);
+    });
   }
 
-  isValid(): boolean {
-    return this.baseForm ? this.baseForm.form.valid : true;
+  onFileSelect(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const objectUrl = URL.createObjectURL(file);
+
+      const fileObj = {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        file: file,
+        url: objectUrl
+      };
+
+      this.uploadedFiles.push(fileObj);
+      this.updateDocumentsControl();
+      event.target.value = '';
+    }
   }
 
-  markAllTouched(): void {
-    if (this.baseForm) this.baseForm.form.markAllAsTouched();
+  removeFile(index: number) {
+    URL.revokeObjectURL(this.uploadedFiles[index].url);
+    this.uploadedFiles.splice(index, 1);
+    this.updateDocumentsControl();
   }
 
-  // pass-through handlers
-  handleValueChanges(ev: any) { this.valueChanges.emit(ev); }
-  handleButtonEvent(ev: any) { this.formButtonEvent.emit(ev); }
+  viewFile(file: any) {
+    if (file.url) {
+      window.open(file.url, '_blank');
+    }
+  }
+
+  // New Download Method
+  downloadFile(file: any) {
+    const link = document.createElement('a');
+    link.href = file.url;
+    link.download = file.name; // Sets the filename for download
+    link.click();
+  }
+
+  updateDocumentsControl() {
+    this.visaForm.patchValue({ documents: this.uploadedFiles });
+  }
 }

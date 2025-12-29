@@ -1,115 +1,99 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { BaseFormComponent, GenericFormConfig, Mode } from 'auro-ui';
-import { Validators } from '@angular/forms';
-import { firstValueFrom } from 'rxjs';
+import { Component, OnInit,Input } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-travel-amount',
-  templateUrl: './travel-amount.component.html'
+  templateUrl: './travel-amount.component.html',
+  styleUrls: ['./travel-amount.component.scss']
 })
 export class TravelAmountComponent implements OnInit {
-  @ViewChild(BaseFormComponent) baseForm: BaseFormComponent;
-  @Output() valueChanges = new EventEmitter<any>();
-  @Output() formButtonEvent = new EventEmitter<any>();
+  advanceForm: FormGroup;
+  @Input() viewOnly: boolean = false;
+  @Input() currentRole: string = '';
+  // Dropdown Options
+  advanceTypeOptions: any[] = [
+    { label: "Cash", value: "Cash" },
+    { label: "Forex Card", value: "Forex Card" },
+    { label: "Online", value: "Online" },
+    { label: "Not Applicable", value: "Not Applicable" },
 
-  formMode: Mode = Mode.create;
-  formData: any = { travelType: 'International' };
-
-  advanceOptions: any[] = [
-    { label: "Yes", value: true },
-    { label: "No", value: false },
   ];
+
   currencyOptions: any[] = [
-    { label: "INR", value: "INR", flag: "assets/images/flags/ind_flag.png" },
-    { label: "SGD", value: "SGD", flag: "assets/images/flags/sg_flag.png" },
-    { label: "USD", value: "USD", flag: "assets/images/flags/usa_flag.png" },
-    { label: "AED", value: "AED", flag: "assets/images/flags/ae_flag.png" },
-    { label: "GBP", value: "GBP", flag: "assets/images/flags/gb_flag.png" },
-    { label: "EUR", value: "EUR", flag: "assets/images/flags/eu_flag.png" },
+    { label: "EUR", value: "EUR" },
+    { label: "USD", value: "USD" },
+    { label: "SGD", value: "SGD" },
+    { label: "INR", value: "INR" },
+    { label: "GBP", value: "GBP" }
   ];
-  formConfig: GenericFormConfig = {
-    api: '',
-    cardType: 'non-border',
-    autoResponsive: true,
-    sections: [
-        {
-          sectionName: "amountSection",
-          cols: 12,
-          headerTitle: "Amount / Cash Details",
-          headerClass: "text-xs col-12 font-semibold text-primary",
-          sectionClass: " mb-3 w-full text-xs shadow-2 p-4 pb-0 border-round",
-        },
-    ],
-    fields:[
-      {
-          type: "select",
-          name: "advanceRequired",
-          label: "Advance Required",
-          sectionName: "amountSection",
-          labelClass: "text-xs",
-          inputClass: "gen-select mb-3",
-          alignmentType: "vertical",
-          options: this.advanceOptions,
-          placeholder: "-- Select --",
-          validators: [Validators.required],
-          className: "col-12 md:col-12 lg:col-3 align-items-center",
-        },
-        {
-          type: "select",
-          name: "currency",
-          label: "Currency",
-          sectionName: "amountSection",
-          labelClass: "text-xs",
-          inputClass: "gen-select mb-3",
-          alignmentType: "vertical",
-          options: this.currencyOptions,
-          placeholder: "-- Select --",
-          className: "col-12 md:col-12 lg:col-3 align-items-center",
-        },
-        {
-          type: "amount",
-          name: "amount",
-          label: "Amount",
-          labelClass: "text-xs pt-2",
-          inputClass: "gen-input pt-2",
-          inputType: "vertical",
-          sectionName: "amountSection",
-          placeholder: "0.00",
-          className: "col-12 md:col-12 lg:col-3 align-items-center",
-        },
-        {
-          type: "amount",
-          name: "amountInINR",
-          label: "Amount in INR",
-          sectionName: "amountSection",
-          labelClass: "text-xs pt-2",
-          inputClass: "gen-input pt-2 no-underline",
-          inputType: "vertical",
-          placeholder: "₹ 0.00",
-          disabled: true,
-          className: "col-12 md:col-12 lg:col-2 align-items-center amountINR",
-        },
-    ]
+
+  // Dummy exchange rates for demo calculation
+  exchangeRates: { [key: string]: number } = {
+    'EUR': 90.50,
+    'USD': 83.00,
+    'GBP': 105.00,
+    'SGD': 62.00,
+    'INR': 1
   };
 
-  constructor() {}
+  constructor(private fb: FormBuilder) {}
 
-  ngOnInit(): void {}
-
-  // Parent helpers
-  getValue(): any {
-    return this.baseForm ? this.baseForm.form.getRawValue() : this.formData;
+  ngOnInit(): void {
+    this.initForm();
   }
 
-  isValid(): boolean {
-    return this.baseForm ? this.baseForm.form.valid : true;
+  initForm() {
+    this.advanceForm = this.fb.group({
+      advanceDetails: this.fb.array([])
+    });
+
+    // Add initial empty row
+    this.addAdvanceItem();
   }
 
-  markAllTouched(): void {
-    if (this.baseForm) this.baseForm.form.markAllAsTouched();
+  // Helper to get the FormArray
+  get advanceDetails(): FormArray {
+    return this.advanceForm.get('advanceDetails') as FormArray;
   }
 
-  // pass-through handlers
-  handleValueChanges(ev: any) { this.valueChanges.emit(ev); }
-  handleButtonEvent(ev: any) { this.formButtonEvent.emit(ev); }
+  // Create a single row (Group)
+  createAdvanceItem(): FormGroup {
+const group = this.fb.group({
+      advanceDate: [new Date(), Validators.required], // Added Date Field
+      advanceType: [null, Validators.required],
+      currency: [null, Validators.required],
+      amount: [null, [Validators.required, Validators.min(1)]],
+      amountInINR: [{ value: 0, disabled: true }]
+    });
+
+    // Listen to changes on this specific row to calculate INR automatically
+    group.valueChanges.subscribe(val => {
+      this.calculateINR(group);
+    });
+
+    return group;
+  }
+
+  addAdvanceItem() {
+    this.advanceDetails.push(this.createAdvanceItem());
+  }
+
+  removeAdvanceItem(index: number) {
+    this.advanceDetails.removeAt(index);
+  }
+
+  // Simple calculation logic
+  calculateINR(group: FormGroup) {
+    const currency = group.get('currency')?.value;
+    const amount = group.get('amount')?.value;
+
+    if (currency && amount && this.exchangeRates[currency]) {
+      const rate = this.exchangeRates[currency];
+      const total = amount * rate;
+      // Patch the value without emitting event to avoid infinite loops
+      group.get('amountInINR')?.setValue(total, { emitEvent: false });
+    } else {
+      group.get('amountInINR')?.setValue(0, { emitEvent: false });
+    }
+  }
 }

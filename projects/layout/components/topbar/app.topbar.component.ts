@@ -147,6 +147,7 @@ export class AppTopBarComponent implements OnInit, OnDestroy {
       header: "Logout",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
+        sessionStorage.clear();
         this.logout();
       },
       reject: () => {

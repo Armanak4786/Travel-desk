@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AppLayoutComponent } from "./layout/components/layout/app.layout.component";
 import { AuthGuard } from "auro-ui";
+import { ViewRequestComponent } from './modules/view-request/view-request.component';
 const routes: Routes = [
   {
     path: "",
@@ -32,17 +33,17 @@ const routes: Routes = [
           ),
       },
       {
-        path: "travel-details",
+        path: "view-request",
         loadChildren: () =>
-          import("./modules/travel-details/travel-details.module").then(
-            (m) => m.TravelDetailsModule
+          import("./modules/view-request/view-request.module").then(
+            (m) => m.ViewRequestModule
           ),
       },
       {
         path: "reimbursement-details",
         loadChildren: () =>
-          import("./modules/travel-details/travel-details.module").then(
-            (m) => m.TravelDetailsModule
+          import("./modules/reimbursement-details/reimbursement-details.module").then(
+            (m) => m.ReimbursementDetailsModule
           ),
       },
     ],
@@ -58,6 +59,7 @@ const routes: Routes = [
       import("./modules/auth/auth.module").then((m) => m.AuthModule),
     // canActivate: [AuthGuard],
   },
+  { path: 'view-request', loadChildren: () => import('./modules/view-request/view-request.module').then(m => m.ViewRequestModule) },
 
   /* { path: 'notfound', component: NotfoundComponent },
   { path: '**', redirectTo: '/notfound' }, */

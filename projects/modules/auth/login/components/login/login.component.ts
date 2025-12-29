@@ -54,6 +54,21 @@ export class LoginComponent implements OnInit {
     this.hidePassword = !this.hidePassword;
   }
 
+  // basicAuthentication() {
+  //   if (
+  //     !this.loginForm.controls["username"].value ||
+  //     !this.loginForm.controls["password"].value
+  //   ) {
+  //     this.loginForm.markAllAsTouched();
+  //     return;
+  //   }
+  //   this.router.navigate(["/dashboard"]);
+  // }
+  // switchLanguage(language) {
+  //   this.translate.useLanguage(language.value.toString());
+  //   this.cdr.detectChanges();
+  // }
+
   basicAuthentication() {
     if (
       !this.loginForm.controls["username"].value ||
@@ -62,10 +77,31 @@ export class LoginComponent implements OnInit {
       this.loginForm.markAllAsTouched();
       return;
     }
-    this.router.navigate(["/dashboard"]);
+
+    const username = this.loginForm.controls['username'].value;
+    let role = '';
+
+    switch (username.toLowerCase()) {
+      case 'sanket':
+        role = 'Employee';
+        break;
+      case 'arman':
+        role = 'TravelDeskAdmin';
+        break;
+      case 'ashish':
+        role = 'FinanceAdmin';
+        break;
+      default:
+        alert('Invalid User! Please enter Sanket, Arman, or Ashish.');
+        return; 
+    }
+
+    sessionStorage.setItem('userRole', role);
+    this.router.navigate(['/dashboard']);
   }
   switchLanguage(language) {
     this.translate.useLanguage(language.value.toString());
     this.cdr.detectChanges();
   }
+
 }

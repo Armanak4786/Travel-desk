@@ -1,13 +1,103 @@
-// ::ng-deep .no-underline{
-//   border: none !important;
-//   border-bottom: none !important;
-//   outline: none !important;
+$primary-teal: #2FA9A9;
 
-// }
+:host ::ng-deep {
+    
+    // Override PrimeNG Dropdowns to look like "Underline" inputs
+    .p-dropdown {
+        background: transparent;
+        
+        .p-inputtext {
+            padding-left: 0; // Align text to start
+            font-weight: 500;
+        }
+        
+        // Custom trigger icon color
+        .p-dropdown-trigger {
+            color: #333;
+            width: 1.5rem;
+        }
 
-::ng-deep .amountINR .p-inputtext {
-  border: none !important;
-  border-bottom: none !important;
-  outline: none !important;
+        // Focused state line color
+        &:not(.p-disabled).p-focus {
+            border-color: $primary-teal !important;
+            box-shadow: none !important;
+        }
+    }
 
+    // Override standard inputs
+    input.p-inputtext {
+        border-color: #d1d5db; // Light gray default
+        
+        &:focus {
+            border-color: $primary-teal !important;
+        }
+    }
+
+    // Add More button color
+    .text-teal-600 {
+        color: $primary-teal !important;
+        
+        .p-button-icon {
+            color: $primary-teal !important;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+    }
+}
+
+:host ::ng-deep {
+
+  // Apply to the specific class you added to styleClass
+  .underline-icon-calendar {
+    
+    // 1. The Container (The Wrapper Span)
+    // This is where we want the BOTTOM border only.
+    &.p-calendar {
+      border: none !important;               // Remove all 4 borders
+      border-bottom: 1px solid #d1d5db !important; // Force bottom border
+      border-radius: 0 !important;           // Remove rounded corners
+      background: transparent !important;
+      padding-bottom: 0px; 
+      
+      // Ensure hover works on the line
+      &:hover {
+        border-bottom-color: #2FA9A9 !important;
+      }
+      
+      // Ensure focus works on the line (when clicked)
+      &.p-inputwrapper-focus {
+        border-bottom-color: #2FA9A9 !important;
+        box-shadow: none !important; // Remove outer glow
+      }
+    }
+
+    // 2. The Input Field (The Text Area)
+    // We must KILL the border, the shadow (focus ring), and the outline.
+    .p-inputtext {
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important; // This is often the "Blue Box" you see on click
+      outline: none !important;
+      background: transparent !important;
+      padding-left: 0 !important;
+    }
+
+    // 3. The Button (The Icon)
+    .p-datepicker-trigger {
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      color: #6b7280;
+      width: 2rem;
+      
+      .pi {
+        font-size: 1rem;
+      }
+
+      &:hover {
+        color: #2FA9A9 !important;
+        background: transparent !important;
+      }
+    }
+  }
 }

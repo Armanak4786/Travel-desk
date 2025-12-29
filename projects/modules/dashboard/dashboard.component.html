@@ -54,13 +54,29 @@
             <i class="pi pi-sliders-h pr-1"></i> Filter
           </a>
 
-          <div>
-            <gen-button
-              class="text-white font-medium"
-              [btnLabel]="'+ Raise a Request'"
-              (onClick)="raiseNewRequest()"
-            ></gen-button>
-          </div>
+<div class="flex justify-content-end align-items-center gap-3">
+  <ng-container *ngIf="userRole === 'Employee'">
+    
+    <div>
+      <gen-button
+        class="text-primary font-medium"
+        [btnLabel]="'Upload Reimbursement'"
+        [btnType]="'border-btn'"
+        (onClick)="uploadReimbursement()"
+      ></gen-button>
+    </div>
+    
+    <div>
+      <gen-button
+        class="text-white font-medium"
+        [btnLabel]="'+ Raise a Request'"
+        (onClick)="raiseNewRequest()"
+      ></gen-button>
+    </div>
+
+  </ng-container>
+
+</div>
         </div>
       </div>
     </div>

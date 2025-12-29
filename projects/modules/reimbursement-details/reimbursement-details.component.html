@@ -1,1 +1,71 @@
-<p>reimbursement-details works!</p>
+<div [ngClass]="viewOnly || hideLayout ? 'w-full' : 'reimbursement-page p-4'">
+  <!-- <div class="breadcrumb form-section" *ngIf="!viewOnly && !hideLayout">
+    <a href="/dashboard"><span class="text-color-secondary">Home ></span></a>
+    <span class="text-primary font-semibold"> Reimbursement</span>
+  </div> -->
+       <!-- <div class="w-full flex justify-content-between align-items-center">
+    <div class="text-color-secondary text-sm mb-2">
+      Home > <span class="text-900 font-medium">Request No. {{ requestId }}</span>
+    </div>
+  </div> -->
+  <div class="form-section" *ngIf="!hideLayout">
+    <a href="/dashboard"><span class="text-color-secondary text-sm mb-2">Home > </span></a>
+      <span class="text-900 font-medium">{{ requestId ? 'Request No. ' + requestId : 'Reimbursement' }}</span>
+  </div>
+  <div>
+    <app-user-info-card *ngIf="!viewOnly && !hideLayout" [userInfo]="userInfo">
+    </app-user-info-card>
+  </div>
+
+ <div class="mt-3"><app-reimbursement-details-card [viewOnly]="viewOnly" 
+       [currentRole]="currentRole"></app-reimbursement-details-card></div> 
+ <div class="mt-3"><app-expense-details [viewOnly]="viewOnly" 
+       [currentRole]="currentRole"
+       (totalChange)="onExpenseTotalChange($event)"></app-expense-details></div> 
+ <div class="mt-3"><app-peridium [viewOnly]="viewOnly" 
+       [currentRole]="currentRole" (totalChange)="onPeridiumTotalChange($event)"></app-peridium></div> 
+
+<div class="mt-3 balance-wrapper">
+  <div class="balance-bar flex justify-content-end align-items-center p-3 border-round text-white"
+       [ngClass]="balanceAmount >= 0 ? 'bg-teal-600' : 'bg-red-500'">
+    
+    <span class="font-bold text-lg">
+      Balance Amount {{ balanceAmount >= 0 ? 'Payable' : 'Receivable' }}: 
+      {{ (balanceAmount < 0 ? -balanceAmount : balanceAmount) | currency:'INR' }}
+    </span>
+    
+  </div>
+</div>
+
+  <div class="review-section flex justify-content-between align-items-center mt-4 p-3 surface-0 shadow-2 border-round text-sm">
+    <div>Prepared By: <span class="font-bold">Mr. Ajay Shah (Designation)</span></div>
+    <div>Verified By: <span class="font-bold">Mr. Pradeep Shukla (Designation)</span></div>
+    <div>Approved By: <span class="font-bold">Mr. Pradeep Shukla (Designation)</span></div>
+  </div>
+
+  <div class="notes-section mt-4 surface-0 shadow-2 border-round p-4 text-sm">
+    <div class="font-semibold mb-2 text-primary">Notes</div>
+    <ol class="ml-3 font-light text-color-secondary">
+      <li>Fill separate forms for different trips.</li>
+      <li>Attach copies of boarding pass/train tickets.</li>
+      <li>Attach list of dates and amounts received from the company.</li>
+      <li>All bills/receipts are to be attached.</li>
+      <li>
+        For per diem claim attach separate form with time sheet duly approved and
+        verified by PM & HR.
+      </li>
+    </ol>
+  </div>
+</div>
+   <div class="action-footer-bar p-2 surface-0 shadow-2 form-section">
+    <div class="flex justify-content-between align-items-center">
+      <a
+        (click)="onCancel()"
+        class="p-button-text text-primary font-bold cursor-pointer p-3"
+        >Cancel</a
+      >
+      <div class="flex gap-2">
+        <gen-button [btnLabel]="'Submit'" (onClick)="onSubmit()"></gen-button>
+      </div>
+    </div>
+  </div>

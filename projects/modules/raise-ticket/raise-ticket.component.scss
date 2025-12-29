@@ -17,21 +17,6 @@
   margin-bottom: 12px;
 }
 
-/* User Info Card */
-.user-info-card {
-  ::ng-deep .p-card-body {
-    padding: 1rem;
-  }
-
-  .text-sm {
-    font-size: 0.9rem;
-    color: var(--text-color-secondary);
-  }
-
-  .text-color {
-    color: var(--text-color);
-  }
-}
 
 /* Action Bar */
 .action-footer-bar {

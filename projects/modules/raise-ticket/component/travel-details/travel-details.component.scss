@@ -1,23 +1,224 @@
-.label-color{
-    color: #666666;
-;
-}
+:host ::ng-deep {
 
-/* Make the disabled file upload look like a clean card */
-::ng-deep .download-only {
-  .p-fileupload {
-    opacity: 1 !important; // Remove the 'disabled' transparency
-    
-    .p-fileupload-buttonbar {
-      display: none; // Hide the 'Upload/Cancel' buttons if they are visible
+    // Dropdowns & Calendars: Remove borders to blend into the grid
+    .p-dropdown, .p-calendar {
+        width: 100%;
+        .p-inputtext {
+            border: none;
+            padding: 0;
+            box-shadow: none !important; // Remove focus glow
+        }
+        .p-dropdown-trigger {
+            width: 1rem;
+            color: #20B2AA; // Teal arrow
+        }
     }
-    
-    // Style the content area to look like a card
-    .p-fileupload-content {
-      border: 1px solid #dee2e6;
-      background: #ffffff;
-      border-radius: 6px;
-      padding: 1rem;
+
+    // Specific adjustment for calendar icon alignment
+    .custom-cal .p-button.p-button-icon-only {
+        background: transparent;
+        color: #20B2AA;
+        border: none;
+        width: 1.5rem;
+        padding: 0;
+        
+        .pi { font-size: 1rem; 
+        color: #20B2AA;}
+    }
+
+    // Input Number (Nights) adjustments
+    .p-inputnumber {
+        .p-inputnumber-input {
+            width: 30px; 
+            padding: 0;
+        }
+    }
+
+    // Toggle Switch - Teal color
+    .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+        background: #20B2AA;
+    }
+
+    /* ===============================
+     DISABLED STATE – HIDE ALL ICONS
+     =============================== */
+
+  /* Dropdowns */
+  .p-dropdown.p-disabled {
+    .p-dropdown-trigger {
+      display: none !important;
     }
   }
+
+  /* Calendar */
+  .p-calendar.p-disabled {
+    .p-datepicker-trigger,
+    .p-button {
+      display: none !important;
+    }
+  }
+
+  /* Generic disabled input icons */
+  input:disabled {
+    + .p-dropdown-trigger,
+    + .p-datepicker-trigger {
+      display: none !important;
+    }
+  }
+
+  /* InputSwitch (Accommodation toggle) */
+  .p-inputswitch.p-inputswitch-disabled {
+    display: none !important;
+  }
+
+  /* InputNumber (+ / - buttons) */
+  .p-inputnumber.p-disabled {
+    .p-inputnumber-button {
+      display: none !important;
+    }
+  }
+
+  /* Optional: normalize disabled text appearance */
+  .p-disabled,
+  .p-inputtext:disabled {
+    opacity: 1 !important;
+    color: #374151 !important;
+    cursor: default;
+  }
+}
+
+:host ::ng-deep {
+  .p-selectbutton.transport-group {
+    display: flex;
+    gap: 0.75rem;     /* 1. SEPARATE BUTTONS: Gap between items */
+    flex-wrap: wrap; 
+
+    .p-button {
+      width: 5rem;        /* MAGICAL PROPERTY: Makes all buttons share equal width */
+      justify-content: center;
+      border-radius: 8px !important; /* Round all corners */
+      margin: 0 !important;          /* Remove default margins */
+      border: 1px solid #dfe7ef !important; 
+      background: #ffffff;
+      color: #64748b;
+      box-shadow: none !important;
+      transition: all 0.2s;
+
+      // Ensure image aligns nicely with text
+      .transport-icon {
+        transition: filter 0.2s; /* Smooth color transition */
+      }
+
+      // Hover Effect (Non-active)
+      &:not(.p-highlight):hover {
+        background: #f8fafc;
+        border-color: #cbd5e1 !important;
+      }
+
+      // 2. ACTIVE STATE (Selected)
+      &.p-highlight {
+        background: #20B2AA !important; /* Teal Background */
+        border-color: #20B2AA !important;
+        color: #ffffff !important;       /* White Text */
+
+        // THE MAGIC PART: 
+        // Forces the SVG image to become pure white
+        .transport-icon {
+          filter: brightness(0) invert(1); 
+        }
+      }
+    }
+  }
+}
+
+/* Use ::ng-deep to penetrate Angular's encapsulation for PrimeNG components */
+:host ::ng-deep .compact-toggle.p-inputswitch {
+  width: 2.5rem;   /* Reduce overall width */
+  height: 1.25rem; /* Reduce height to make it "thinner" */
+}
+
+/* Adjust the round knob (slider handle) to fit the new size */
+:host ::ng-deep .compact-toggle .p-inputswitch-slider:before {
+  width: 0.85rem;   /* Smaller knob width */
+  height: 0.85rem;  /* Smaller knob height */
+  left: 0.2rem;     /* Adjust left spacing */
+  margin-top: -0.425rem; /* Center the knob vertically (half of height) */
+}
+
+/* Target the specific component wrapper */
+:host ::ng-deep .nights-input {
+
+  /* Target the increment and decrement buttons */
+  .p-inputnumber-button {
+    background-color: #ffffff !important;
+    border: 1px solid #000000 !important; /* Black border */
+    color: #000000 !important;            /* Black icon */
+    width: 2rem !important;               /* Force Square width */
+    height: 2rem !important;              /* Force Square height */
+    border-radius: 2px !important;   /* Slight rounded corners */
+  }
+
+  /* Prevent BLUE background on Hover */
+  .p-inputnumber-button:hover {
+    background-color: #f5f5f5 !important; /* Light gray on hover */
+    border-color: #000000 !important;
+    color: #000000 !important;
+  }
+
+  /* Prevent BLUE background on Click/Active */
+  .p-inputnumber-button:active,
+  .p-inputnumber-button:focus {
+    background-color: #e0e0e0 !important; /* Slightly darker gray on click */
+    border-color: #000000 !important;
+    color: #000000 !important;
+    box-shadow: none !important;          /* Remove blue glow ring */
+  }
+
+  /* Ensure the input field in the middle has no border/glow */
+  .p-inputnumber-input {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+$teal-primary: #2FA9A9;
+$teal-light: #E0F2F1;
+$teal-text: #00695C;
+
+// 1. The Dashed Upload Button
+.dashed-upload-btn {
+  background-color: transparent;
+  // Ensure the dashed border is the correct color
+  border-color: $teal-primary !important; 
+  
+  // Hover effect for the whole button
+  &:hover {
+    background-color: rgba($teal-primary, 0.05);
+  }
+
+  i, span {
+    color: $teal-primary !important;
+  }
+}
+
+// 2. The File Chip (Solid Teal Background)
+.file-chip {
+  background-color: $teal-light;
+  color: $teal-text;
+  border: 1px solid transparent; // Prevents layout shift if you add border later
+  
+  // Specific style for the filename text
+  span {
+    white-space: nowrap;
+    max-width: 150px; // Truncate very long names
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// 3. Transport Toggle Buttons (Optional Helper)
+// This ensures the active state overrides the default styles
+.bg-teal-500 {
+  background-color: $teal-primary !important;
+  border-color: $teal-primary !important;
 }
