@@ -222,3 +222,37 @@ $teal-text: #00695C;
   background-color: $teal-primary !important;
   border-color: $teal-primary !important;
 }
+
+// 4. City Autocomplete Styling
+:host ::ng-deep {
+  .city-autocomplete {
+    .p-autocomplete-input {
+      border: none;
+      padding: 0;
+      box-shadow: none !important;
+      width: 100%;
+    }
+    
+    .p-autocomplete-dropdown {
+      display: none;
+    }
+  }
+}
+
+// Global panel styles (must be in global styles or use ::ng-deep with encapsulation: None)
+::ng-deep .city-autocomplete-panel {
+  min-width: 280px !important;
+  max-width: 350px !important;
+  
+  .p-autocomplete-items {
+    padding: 0.5rem 0;
+    
+    .p-autocomplete-item {
+      padding: 0.5rem 1rem;
+      
+      &:hover {
+        background-color: #f0fdfa;
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "production": true,
-  "apiUrl": "https://devportalgateway.aurionpro.com/gateway",
+  "apiUrl": "http://172.16.3.134:9101/api",
   "clientId": "AURPRIA.RESTAPI.DEVPORTAL",
   "authority": "https://login10.fisglobal.com/idp/aurionpro",
   "redirectUrl": "https://devportaludc.aurionpro.com/authentication/login",
@@ -20,5 +20,9 @@
   "FIS": true,
   "revokeSessionUrlEntra": "https://graph.microsoft.com/v1.0/me/revokeSignInSessions",
   "revokeAllTokenFIS": "https://login10.fisglobal.com/idp/aurionpro/rest/1.0/idptoken/delete/alltoken/me",
-  "ActiveClient": "UDCDO"
+  "ActiveClient": "UDCDO",
+  "TravelDesk_Server": "http://172.16.3.134:9101/api",
+  "Amadeus_Client_Id": "TVRcQZEFmYFsG1wPRsS3N31mzAIEC4zl",
+  "Amadeus_Client_Secret": "RffuIcV7Aa9tTUh8",
+  "Geoapify_Api_Key": "7a90ae8e008844e091def460cf6ac7db"
 }

@@ -4,17 +4,30 @@
   styleClass="user-profile-overlay"
 >
   <div class="profile-dropdown-content">
-    <div class="profile-header">
+    <div class="profile-header" *ngIf="userInfo$ | async as user; else noUser">
       <img
-        src="https://placehold.co/40x40/E0E0E0/757575?text=PS"
+        [src]="user?.avatar || getPlaceholderAvatarUrl(user?.name, 45)"
         alt="User Avatar"
         class="profile-avatar"
       />
       <div class="profile-info">
-        <span class="profile-name">{{ userName }}</span>
-        <span class="profile-email">{{ userEmail }}</span>
+        <span class="profile-name">{{ user?.name || "N/A" }}</span>
+        <span class="profile-email">{{ user?.email || "N/A" }}</span>
       </div>
     </div>
+    <ng-template #noUser>
+      <div class="profile-header">
+        <img
+          [src]="getPlaceholderAvatarUrl('N/A', 45)"
+          alt="User Avatar"
+          class="profile-avatar"
+        />
+        <div class="profile-info">
+          <span class="profile-name">N/A</span>
+          <span class="profile-email">N/A</span>
+        </div>
+      </div>
+    </ng-template>
 
     <div class="profile-login-time">
       <hr class="profile-divider" />

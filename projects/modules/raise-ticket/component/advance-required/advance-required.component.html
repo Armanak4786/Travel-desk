@@ -1,0 +1,98 @@
+<form [formGroup]="advanceRequiredForm">
+  <div
+    class="surface-card shadow-2 border-round p-4 pb-2 mb-3 bg-white justify-content-between w-full"
+  >
+    <div class="flex align-items-center mb-4">
+      <div class="text-xs font-bold text-primary mr-4">Advance Required</div>
+      <div class="flex align-items-center">
+        <p-inputSwitch
+          formControlName="advanceRequired"
+                          styleClass="compact-toggle"
+
+          [disabled]="isReadOnly"
+        ></p-inputSwitch>
+        <span class="ml-2 text-sm font-medium text-700">
+          {{ advanceRequiredForm.get("advanceRequired")?.value ? "Yes" : "No" }}
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="advanceRequiredForm.get('advanceRequired')?.value">
+      <div formArrayName="advanceRequiredDetails">
+        <div
+          *ngFor="let item of advanceRequiredDetails.controls; let i = index"
+          [formGroupName]="i"
+          class="mb-4"
+        >
+          <div class="formgrid grid gap-4 align-items-end">
+            <div class="field col-2 mb-0">
+              <label class="block text-xs text-500 mb-1">Currency</label>
+              <p-dropdown
+                [options]="currencyOptions"
+                formControlName="currency"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="-- Select --"
+                styleClass="w-full text-sm border-bottom-1 border-noround border-x-none border-top-none shadow-none pl-0"
+                [disabled]="isReadOnly"
+              >
+              </p-dropdown>
+            </div>
+
+            <div class="field col-2 mb-0 ml-2">
+              <label class="block text-xs text-500 mb-1">Amount</label>
+              <number
+                formControlName="amount"
+                class="input-text-left"
+                [readOnly]="isReadOnly"
+              >
+              </number>
+            </div>
+
+            <div class="col-2 mb-0">
+              <label class="block text-xs text-500 mb-0 pb-2">Forex Rate</label>
+              <amount
+                formControlName="forexRate"
+                class="input-text-left"
+                [disabled]="isReadOnly"
+              >
+              </amount>
+            </div>
+
+            <div class="field col-12 md:col-2 mb-0 ml-2">
+            <label class="block text-xs text-500 pb-1">Amount in INR</label>
+            <amount
+            formControlName="amountInINR"
+              class="input-text-left no-underline"
+              [value]="item.get('amountInINR')?.value"
+            >
+            </amount>
+            </div>
+
+            <div class="col-fixed mb-2 ml-2" style="width: 3rem">
+              <button
+                *ngIf="advanceRequiredDetails.length > 1 && !isReadOnly"
+                pButton
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="removeAdvanceItem(i)"
+              ></button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="pb-3 mt-2" *ngIf="!isReadOnly">
+        <button
+          pButton
+          type="button"
+          icon="pi pi-plus"
+          label="Add More"
+          class="p-button-text text-teal-600 font-bold hover:bg-transparent pl-0 text-sm"
+          (click)="addAdvanceItem()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</form>

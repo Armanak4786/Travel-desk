@@ -1,8 +1,19 @@
-<base-form
-  [formConfig]="formConfig"
-  [data]="formData"
-  [mode]="formMode"
-  (valueChanges)="handleValueChanges($event)"
-  (formButtonEvent)="handleButtonEvent($event)"
-  class="form-section">
-</base-form>
+<ng-container *ngIf="hasExpensesData || currentRole === 'TravelDeskAdmin'; else noExpenses">
+  <base-form
+    [formConfig]="formConfig"
+    [data]="formData"
+    [mode]="effectiveMode"
+    (valueChanges)="handleValueChanges($event)"
+    (formButtonEvent)="handleButtonEvent($event)"
+    class="form-section">
+  </base-form>
+</ng-container>
+
+<ng-template #noExpenses>
+  <div class="surface-card shadow-2 border-round p-4 mb-3 bg-white">
+    <div class="text-xs font-semibold text-primary mb-3">Travel & Hospitality Expenses</div>
+    <div class="text-start py-4 text-500 text-sm font-italic">
+      No travel & hospitality expenses have been added yet.
+    </div>
+  </div>
+</ng-template>

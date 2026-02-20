@@ -817,3 +817,77 @@ p-selectbutton.transport-select {
     }
   }
 }
+
+/* PRIME DROPDOWN — DISABLED STATE (GLOBAL FIX) */
+.p-dropdown.p-disabled > .p-dropdown-trigger {
+  display: none !important;
+}
+
+.p-dropdown.p-disabled {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  pointer-events: none;
+
+  padding-left: 2;
+}
+
+.p-dropdown.p-disabled .p-dropdown-label {
+  padding-left: 0 !important;
+  cursor: default !important;
+}
+
+/* hide calendar icon */
+.p-calendar.p-disabled .p-datepicker-trigger {
+  display: none !important;
+}
+
+/* remove underline / border */
+.p-calendar.p-disabled input {
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding-left: 0 !important;
+  cursor: default !important;
+}
+
+/* remove hover/focus illusion */
+.p-calendar.p-disabled input:hover,
+.p-calendar.p-disabled input:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* -------------------------------
+   TEXT INPUTS / TEXTAREA
+-------------------------------- */
+
+input:disabled,
+textarea:disabled,
+.p-inputtext:disabled {
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding-left: 0 !important;
+  cursor: default !important;
+}
+
+/* remove hover/focus illusion */
+input:disabled:hover,
+input:disabled:focus,
+textarea:disabled:hover,
+textarea:disabled:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* -------------------------------
+   GLOBAL DISABLED SANITY
+-------------------------------- */
+
+.p-disabled {
+  opacity: 1 !important;  /* remove greyed-out lie */
+  cursor: default !important;
+}

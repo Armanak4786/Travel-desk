@@ -1,5 +1,6 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { MasterDataService, DropdownOption } from 'projects/modules/shared/services/master-data.service';
 
 @Component({
   selector: 'app-expense-details',
@@ -15,26 +16,27 @@ export class ExpenseDetailsComponent implements OnInit {
   totalExpenses: number = 0;
   advanceAmount: number = 20; // Default from your config
 
-  reimbursementTypeOptions: any[] = [
-    { label: "Car", value: "car" },
-    { label: "Travel", value: "travel" },
-    { label: "Food", value: "food" },
-  ];
+  reimbursementTypeOptions: DropdownOption[] = [];
+  currencyOptions: DropdownOption[] = [];
 
-  currencyOptions: any[] = [
-    { label: "INR", value: "INR" },
-    { label: "USD", value: "USD" },
-    { label: "EUR", value: "EUR" },
-    { label: "AED", value: "AED" },
-    { label: "GBP", value: "GBP" },
-    { label: "SGD", value: "SGD" }
-  ];
-
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private masterDataService: MasterDataService
+  ) {}
 
   ngOnInit(): void {
+    // Load master data options
+    this.loadMasterDataOptions();
     this.initForm();
     this.checkViewMode();
+  }
+
+  /**
+   * Load dropdown options from MasterDataService
+   */
+  private loadMasterDataOptions(): void {
+    this.currencyOptions = this.masterDataService.getCurrencyTypes();
+    this.reimbursementTypeOptions = this.masterDataService.getReimbursementTypes();
   }
 
   initForm() {
@@ -67,14 +69,20 @@ addSampleRows() {
     const dummyPdf = new File(["dummy content"], "airport_cab_invoice.pdf", { type: "application/pdf" });
     const dummyImg = new File(["dummy content"], "client_dinner_receipt.png", { type: "image/png" });
 
+    // Get IDs from master data
+    const travelTypeId = this.masterDataService.getIdByName('reimbursementTypes', 'Travel') || 2;
+    const foodTypeId = this.masterDataService.getIdByName('reimbursementTypes', 'Food') || 3;
+    const inrId = this.masterDataService.getIdByName('currencyTypes', 'INR') || 1;
+    const usdId = this.masterDataService.getIdByName('currencyTypes', 'USD') || 2;
+
     // Row 1: Cab Expense (With PDF)
     const row1 = this.createExpenseItem();
     row1.patchValue({
       expenseDate: new Date(), 
-      reimbursementType: 'travel',
+      reimbursementType: travelTypeId,
       particulars: 'Cab to Airport from Office',
       billFile: dummyPdf, // <--- Attached dummy file
-      currency: 'INR',
+      currency: inrId,
       amount: 1500,
       forexRate: 1,
       inrAmount: 1500
@@ -85,10 +93,10 @@ addSampleRows() {
     const row2 = this.createExpenseItem();
     row2.patchValue({
       expenseDate: new Date(),
-      reimbursementType: 'food',
+      reimbursementType: foodTypeId,
       particulars: 'Dinner with Client',
       billFile: dummyImg, // <--- Attached dummy file
-      currency: 'USD',
+      currency: usdId,
       amount: 50,
       forexRate: 84,
       inrAmount: 4200
@@ -103,12 +111,15 @@ addSampleRows() {
   }
 
   createExpenseItem(): FormGroup {
+    // Default to INR (id: 1) from master data
+    const defaultCurrencyId = this.masterDataService.getIdByName('currencyTypes', 'INR') || 1;
+
     const group = this.fb.group({
       expenseDate: [new Date(), Validators.required],
       reimbursementType: [null, Validators.required],
       particulars: ['', Validators.required],
       billFile: [null], // Placeholder for file
-      currency: ['INR', Validators.required],
+      currency: [defaultCurrencyId, Validators.required],
       amount: [null, Validators.required],
       forexRate: [1, Validators.required], // Default to 1
       inrAmount: [{ value: 0, disabled: true }]

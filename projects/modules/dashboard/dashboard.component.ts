@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
-import { GenTableComponent, StorageService } from "auro-ui";
+import { GenTableComponent, StorageService, ToasterService } from "auro-ui";
+import { TravelRequestService, BasicTravelRequestItem } from "../shared/services/travel-request.service";
 
 @Component({
   selector: "app-dashboard",
@@ -28,10 +29,13 @@ userRole: string = '';
     { label: "20", value: 20 },
     { label: "30", value: 30 },
   ];
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private travelRequestService: TravelRequestService,
+    private toasterService: ToasterService
+  ) {}
 
   ngOnInit(): void {
-
     this.userRole = sessionStorage.getItem('userRole') || 'Employee';
     this.yearOptions = [
       { label: "Current Year - 2025", value: 2025 },
@@ -40,12 +44,14 @@ userRole: string = '';
     ];
     this.actionOptions = [
       { actionName: "view", icon: "pi pi-eye", tooltip: "View Details" },
+      { actionName: "edit", icon: "pi pi-pencil", tooltip: "Edit Request" },
       { actionName: "upload", icon: "pi pi-upload", tooltip: "Upload Reimbursement" },
       { actionName: "delete", icon: "pi pi-trash", tooltip: "Delete Request" },
     ];
     this.selectedYear = 2025;
     this.defineColumns();
-    this.loadMockData();
+    // this.loadMockData();
+    this.loadTravelRequests(1, this.rows);
   }
 
   defineColumns() {
@@ -70,7 +76,6 @@ userRole: string = '';
         dateFormat: "dd MMM yyyy",
       },
       { field: "type", headerName: "Type   ", sortable: true},
-      { field: "countryCity", headerName: "Country / City", sortable: true },
       { field: "manager", headerName: "Manager", sortable: true },
       { field: "requestStatus", headerName: "Request Status", sortable: true },
       {
@@ -87,6 +92,44 @@ userRole: string = '';
     ];
   }
 
+  private readonly DASH_PLACEHOLDER = "-";
+
+  private normalizeTravelRequestRow(input: any, roleBasedActions: any[]): any {
+    const requestNo = input?.travelRequestId ?? input?.requestNo ?? this.DASH_PLACEHOLDER;
+
+    return {
+      requestNo,
+      empName: input?.employeeName ?? input?.empName ?? this.DASH_PLACEHOLDER,
+      empCode: input?.employeeCode ?? input?.empCode ?? this.DASH_PLACEHOLDER,
+      travelDate: input?.travelStartDate ?? input?.travelDate ?? null,
+      returnDate: input?.travelEndDate ?? input?.returnDate ?? null,
+      type: input?.travelTypeName ?? input?.type ?? this.DASH_PLACEHOLDER,
+      manager: input?.manager ?? this.DASH_PLACEHOLDER,
+      reimbursementStatus: input?.reimbursementStatus ?? this.DASH_PLACEHOLDER,
+
+      requestStatus: input?.statusName ?? input?.requestStatus ?? this.DASH_PLACEHOLDER,
+      actions: input?.actions ?? roleBasedActions,
+    };
+  }
+
+  async loadTravelRequests(page: number, pageSize: number): Promise<void> {
+    let roleBasedActions = this.actionOptions;
+    if (this.userRole === 'TravelDeskAdmin' || this.userRole === 'FinanceAdmin') {
+      roleBasedActions = this.actionOptions.filter(action => action.actionName === 'view');
+    }
+
+    const response = await this.travelRequestService.getBasicTravelRequests(page, pageSize);
+    if (response && response.isSuccess && response.data) {
+      this.allTravelRequests = response.data.items.map((r: BasicTravelRequestItem) =>
+        this.normalizeTravelRequestRow(r, roleBasedActions)
+      );
+      this.rowData = this.allTravelRequests;
+      this.totalRecord = response.data.totalCount;
+      this.filteredRequests = this.allTravelRequests;
+    }
+  }
+
+  /* MOCK DATA - Commented out, kept for reference
   loadMockData() {
 
     // 1. Filter actions based on role
@@ -163,11 +206,14 @@ userRole: string = '';
         actions: roleBasedActions,
       },
     ];
-    this.allTravelRequests = mockData;
+    this.allTravelRequests = mockData.map((r) =>
+      this.normalizeTravelRequestRow(r, roleBasedActions)
+    );
     this.filteredRequests = this.allTravelRequests;
     this.totalRecord = this.filteredRequests.length;
     this.updatePagedData();
   }
+  END MOCK DATA */
 
   onStatusTabChange(status: string) {
     this.selectedStatus = status;
@@ -194,7 +240,9 @@ userRole: string = '';
   }
 
   refreshData() {
-    this.loadMockData();
+    this.selectedStatus = 'All';
+    this.first = 0;
+    this.loadTravelRequests(1, this.rows);
   }
 
   openFilters() {}
@@ -216,6 +264,8 @@ onCellClick(event: any) {
       
       if (targetClass.includes('pi-eye')) {
         actionName = 'view';
+      } else if (targetClass.includes('pi-pencil')) {
+        actionName = 'edit';
       } else if (targetClass.includes('pi-upload')) {
         actionName = 'upload';
       } else if (targetClass.includes('pi-trash')) {
@@ -227,6 +277,11 @@ onCellClick(event: any) {
     if (actionName === "view") {
       this.router.navigate(["/view-request"], {
         queryParams: { id: rowData.requestNo } 
+      });
+
+    } else if (actionName === "edit") {
+      this.router.navigate(["/view-request"], {
+        queryParams: { id: rowData.requestNo, mode: 'edit' }
       });
 
     } else if (actionName === "upload") {
@@ -242,6 +297,7 @@ onCellClick(event: any) {
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
-    this.updatePagedData();
+    const page = Math.floor(event.first / event.rows) + 1;
+    this.loadTravelRequests(page, event.rows);
   }
 }

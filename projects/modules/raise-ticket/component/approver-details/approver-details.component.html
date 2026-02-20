@@ -1,0 +1,21 @@
+<gen-card headerText="Approver" class="mb-3">
+  <ng-container body>
+    <ng-container *ngIf="approverTableData?.length > 0; else noApprovers">
+      <gen-table
+        [columns]="approverColumns"
+        [dataList]="approverTableData"
+        [tableStyle]="'normal'"
+        [paginatorFlag]="false"
+        [sortFlag]="false"
+        [headingClass]="'label-color font-normal'"
+        (onCellValueChange)="onCellValueChange($event)"
+      ></gen-table>
+    </ng-container>
+
+    <ng-template #noApprovers>
+      <div class="text-center py-4 text-500 text-sm font-italic">
+        No approver details available.
+      </div>
+    </ng-template>
+  </ng-container>
+</gen-card>

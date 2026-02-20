@@ -7,7 +7,7 @@
   </div>
 
 
-  <app-user-info-card [userInfo]="userInfo" class="w-full block">
+  <app-user-info-card [userInfo]="(userInfo$ | async)" class="w-full block">
   </app-user-info-card>
 
   <div class="w-full pt-4">
@@ -32,6 +32,7 @@
       [viewOnly]="isViewOnly"
       [currentRole]="userRole"
       [hideLayout]="true"
+      [requestData]="requestData"
       class="w-full block"
     >
     </app-raise-ticket>

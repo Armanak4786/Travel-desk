@@ -22,6 +22,7 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { DatePipe } from "@angular/common";
 import { UserProfileOverlayComponent } from "../user-profile-overlay/user-profile-overlay.component";
+import { EmployeeProfileService } from "projects/modules/shared/services/employee-profile.service";
 
 @Component({
   selector: "app-topbar",
@@ -57,6 +58,7 @@ export class AppTopBarComponent implements OnInit, OnDestroy {
   isDealerDropdownEnabled = false;
 
   isSidemenuExpanded: boolean = false;
+  userInfo$ = this.employeeProfileService.employeeCardInfo$;
 
   constructor(
     public layoutService: LayoutService,
@@ -70,8 +72,30 @@ export class AppTopBarComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private translateSvc: TranslateService,
     private toasterService: ToasterService,
-    private datePipe: DatePipe // Inject DatePipe
+    private datePipe: DatePipe, // Inject DatePipe
+    private employeeProfileService: EmployeeProfileService
   ) {}
+
+  getPlaceholderAvatarUrl(name: string | null | undefined, size: number = 40): string {
+    const initials = this.getInitials(name);
+    return `https://placehold.co/${size}x${size}/E0E0E0/757575?text=${encodeURIComponent(
+      initials
+    )}`;
+  }
+
+  getInitials(name: string | null | undefined): string {
+    const cleaned = (name || "").trim();
+    if (!cleaned) return "NA";
+
+    const parts = cleaned.split(/\s+/).filter(Boolean);
+    if (parts.length === 1) {
+      return parts[0].substring(0, 2).toUpperCase();
+    }
+
+    const first = parts[0][0] || "";
+    const last = parts[parts.length - 1][0] || "";
+    return `${first}${last}`.toUpperCase();
+  }
 
   async ngOnInit() {
     let accessToken = sessionStorage.getItem("accessToken");
@@ -157,7 +181,7 @@ export class AppTopBarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    // this.authSvc.logout();
+    this.authSvc.logout();
     // this.toasterService.showToaster({detail: "Logged out successfully."});
     this.router.navigate(['/authentication/login']);
   }

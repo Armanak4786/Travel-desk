@@ -1,0 +1,109 @@
+<form [formGroup]="advanceGivenForm">
+  <div
+    class="surface-card shadow-2 border-round p-4 pb-2 mb-3 bg-white justify-content-between w-full"
+  >
+    <div class="text-xs font-bold text-primary mb-4">
+      Advance given by Travel Desk
+    </div>
+
+    <div formArrayName="advanceGivenDetails">
+      <ng-container *ngIf="advanceGivenDetails.length > 0; else noAdvanceGiven">
+        <div
+          *ngFor="let item of advanceGivenDetails.controls; let i = index"
+          [formGroupName]="i"
+          class="relative mb-4"
+        >
+          <div class="formgrid grid gap-4 align-items-end">
+            <div class="field col-12 md:col-2 mb-0">
+              <label class="block text-xs text-500 mb-1">Date</label>
+              <p-calendar
+                formControlName="advanceDate"
+                dateFormat="d M y"
+                placeholder="Select Date"
+                [showIcon]="true"
+                styleClass="w-full underline-icon-calendar"
+                inputStyleClass="w-full text-sm font-medium"
+                appendTo="body"
+              >
+              </p-calendar>
+            </div>
+
+            <div class="field col-12 md:col-2 mb-0 ml-2">
+              <label class="block text-xs text-500 mb-1"
+                >Advance Cash/Forex Card</label
+              >
+              <p-dropdown
+                [options]="advanceTypeOptions"
+                formControlName="advanceType"
+                placeholder="Select"
+                styleClass="w-full text-sm border-bottom-1 border-noround border-x-none border-top-none shadow-none pl-0"
+              >
+              </p-dropdown>
+            </div>
+
+            <div class="field col-12 md:col-2 mb-0 ml-2">
+              <label class="block text-xs text-500 mb-1">Currency</label>
+              <p-dropdown
+                [options]="currencyOptions"
+                formControlName="currency"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select"
+                styleClass="w-full text-sm border-bottom-1 border-noround border-x-none border-top-none shadow-none pl-0"
+              >
+              </p-dropdown>
+            </div>
+
+            <div class="field col-12 md:col-2 mb-0 ml-2">
+              <label class="block text-xs text-500 mb-1">Amount</label>
+              <number formControlName="amount" class="input-text-left"> </number>
+            </div>
+
+            <div class="col-1 mb-0">
+              <label class="block text-xs text-500 mb-0 pb-2">Forex Rate</label>
+              <amount formControlName="forexRate" class="input-text-left">
+              </amount>
+            </div>
+
+            <div class="field col-1 mb-0 ml-2">
+              <label class="block text-xs text-500 pb-1">Amount in INR</label>
+              <amount
+              formControlName="amountInINR"
+                class="input-text-left no-underline"
+                [value]="item.get('amountInINR')?.value"
+              >
+              </amount>
+            </div>
+
+            <div class="col-fixed mb-2" style="width: 3rem">
+              <button
+                *ngIf="advanceGivenDetails.length > 1 && !isReadOnly"
+                pButton
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="removeAdvanceItem(i)"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noAdvanceGiven>
+        <div class="text-start py-4 text-500 text-sm font-italic">
+          No advance has been given yet.
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="pb-3 mt-2" *ngIf="isTravelDeskAdmin">
+      <button
+        pButton
+        type="button"
+        icon="pi pi-plus"
+        label="Add More"
+        class="p-button-text text-teal-600 font-bold hover:bg-transparent pl-0 text-sm"
+        (click)="addAdvanceItem()"
+      ></button>
+    </div>
+  </div>
+</form>

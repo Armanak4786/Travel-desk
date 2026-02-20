@@ -1,0 +1,66 @@
+:host ::ng-deep {
+  .status-badge {
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-weight: 400;
+    font-size: 12px;
+    display: inline-block;
+    width: auto;
+    margin: 0;
+    white-space: nowrap;
+    min-width: 80px;
+    &.status-approved { background-color: #D7EAD4; color: #0D6E00; }
+    &.status-rejected { background-color: #FFD6D7; color: #C90003; }
+    &.status-pending  { background-color: #FFE4B3; color: #D36900; }
+    &.status-on-hold  { background-color: #DFF6F6; color: #009999; }
+  }
+
+  .cell-approved, .cell-rejected, .cell-on-hold, .cell-pending {
+    
+    p-dropdown, .p-dropdown {
+       width: 100%;
+       min-width: 90px;
+       display: block;
+    }
+
+    .p-dropdown {
+        border-radius: 999px !important; 
+        border: none !important;      
+        padding: 0 !important;
+        height: auto !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .p-dropdown-label {
+        padding: 4px 12px !important;
+        text-align: center !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+    }
+
+    /* Hide the arrow trigger to make it look exactly like a badge */
+    // .p-dropdown-trigger {
+    //     display: none !important;
+    // }
+  }
+
+  .cell-approved .p-dropdown  { background-color: #D7EAD4 !important; }
+  .cell-approved .p-dropdown-label { color: #0D6E00 !important; }
+  .cell-approved .p-dropdown-trigger  { color: #0D6E00 !important; }
+  
+  .cell-rejected .p-dropdown { background-color: #FFD6D7 !important; }
+  .cell-rejected .p-dropdown-label { color: #C90003 !important; }
+  .cell-rejected .p-dropdown-trigger  { color: #C90003 !important; }
+
+  .cell-pending .p-dropdown { background-color: #FFE4B3 !important; }
+  .cell-pending .p-dropdown-label { color: #D36900 !important; }
+  .cell-pending .p-dropdown-trigger  { color: #D36900 !important; }
+
+  .cell-on-hold .p-dropdown { background-color: #DFF6F6 !important; }
+  .cell-on-hold .p-dropdown-label { color: #009999 !important; }
+  .cell-on-hold .p-dropdown-trigger  { color: #009999 !important; }
+}

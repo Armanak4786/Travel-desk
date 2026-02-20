@@ -1,0 +1,92 @@
+$primary-teal: #2FA9A9;
+
+:host ::ng-deep {
+    
+    // --- Toggle Switch Styling (Optional tweaks) ---
+    .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+        background: $primary-teal !important;
+    }
+
+    // --- Dropdown Styles ---
+    .p-dropdown {
+        background: transparent;
+        
+        .p-inputtext {
+            padding-left: 0; 
+            font-weight: 500;
+        }
+        
+        .p-dropdown-trigger {
+            color: #333;
+            width: 1.5rem;
+        }
+
+        &:not(.p-disabled).p-focus {
+            border-color: $primary-teal !important;
+            box-shadow: none !important;
+        }
+        
+        // Disable state styling to look clean
+        &.p-disabled {
+            opacity: 1; 
+            .p-inputtext { color: #555; }
+            border-bottom: 1px dashed #ccc; // Visual cue for read-only
+        }
+    }
+
+    // --- Standard Input Styles (Underline look) ---
+    .custom-input {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #d1d5db;
+        border-radius: 0;
+        padding-left: 0;
+        
+        &:focus {
+            border-color: $primary-teal !important;
+            outline: none;
+        }
+        
+        &[readonly] {
+            border-bottom: 1px dashed #ccc;
+            color: #555;
+        }
+    }
+
+    // --- Add More Button ---
+    .text-teal-600 {
+        color: $primary-teal !important;
+        
+        .p-button-icon {
+            color: $primary-teal !important;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+    }
+
+    // 1. DROPDOWNS: When disabled
+  .p-dropdown.p-disabled {
+    border: none !important;      // Remove border/underline
+    opacity: 1 !important;        // Keep text fully visible (not faded)
+
+    // Hide the Arrow Icon
+    .p-dropdown-trigger {
+      display: none !important;
+    }
+
+    // Ensure text remains dark and readable
+    .p-inputtext {
+      color: #212121 !important; 
+      padding-left: 0;
+      opacity: 1 !important;
+    }
+  }
+
+  // 2. INPUTS: When disabled or readonly
+  input:disabled,
+  input[readonly] {
+    border-bottom: none !important; // Remove underline
+    color: #212121 !important;      // Keep text dark
+    opacity: 1 !important;
+  }
+}

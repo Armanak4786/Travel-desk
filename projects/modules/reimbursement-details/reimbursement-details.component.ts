@@ -6,6 +6,7 @@ import {
   Mode,
     CommonService,
 } from "auro-ui";
+import { EmployeeProfileService } from "projects/modules/shared/services/employee-profile.service";
 
 @Component({
   selector: 'app-reimbursement-details',
@@ -18,7 +19,12 @@ export class ReimbursementDetailsComponent implements OnInit{
     return;
   }
 
-    constructor(public svc: CommonService, private el: ElementRef,    private route: ActivatedRoute,) {
+    constructor(
+      public svc: CommonService,
+      private el: ElementRef,
+      private route: ActivatedRoute,
+      private employeeProfileService: EmployeeProfileService
+    ) {
       this.svc = svc;
     }
       requestId: string = '';
@@ -31,13 +37,7 @@ export class ReimbursementDetailsComponent implements OnInit{
   @ViewChild(BaseFormComponent) baseForm: BaseFormComponent;
   formConfig: GenericFormConfig;
   formMode: Mode = Mode.create;
-    userInfo = {
-    name: "Pradeep Sharma",
-    employeeId: "AP8978870",
-    department: "Banking",
-    grade: "10",
-    designation: "Sr. Associate Manager",
-  };
+  userInfo$ = this.employeeProfileService.employeeCardInfo$;
   ngOnInit(): void {
     // If it's a standalone page, get ID from URL to show in breadcrumb
     this.route.queryParams.subscribe(params => {

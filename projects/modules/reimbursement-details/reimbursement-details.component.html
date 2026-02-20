@@ -13,7 +13,7 @@
       <span class="text-900 font-medium">{{ requestId ? 'Request No. ' + requestId : 'Reimbursement' }}</span>
   </div>
   <div>
-    <app-user-info-card *ngIf="!viewOnly && !hideLayout" [userInfo]="userInfo">
+    <app-user-info-card *ngIf="!viewOnly && !hideLayout" [userInfo]="(userInfo$ | async)">
     </app-user-info-card>
   </div>
 

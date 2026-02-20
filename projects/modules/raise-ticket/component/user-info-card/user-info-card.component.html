@@ -4,7 +4,7 @@
       
       <div class="flex align-items-center">
         <img
-          [src]="userInfo?.avatar || 'https://placehold.co/40x40/E0E0E0/757575?text=PS'"
+          [src]="userInfo?.avatar || getPlaceholderAvatarUrl(userInfo?.name, 40)"
           alt="User Avatar"
           class="border-circle mr-3"
           style="width: 40px; height: 40px;"

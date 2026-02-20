@@ -9,7 +9,7 @@
   </div>
 
   <div>
-    <app-user-info-card *ngIf="!viewOnly && !hideLayout" [userInfo]="userInfo">
+    <app-user-info-card *ngIf="!viewOnly && !hideLayout" [userInfo]="(userInfo$ | async)">
     </app-user-info-card>
   </div>
 
@@ -25,27 +25,22 @@
     <app-travel-and-hospitility-expenses [viewOnly]="viewOnly" 
        [currentRole]="currentRole"></app-travel-and-hospitility-expenses>
   </div>
-  <div>
-    <app-travel-amount [viewOnly]="viewOnly" 
-       [currentRole]="currentRole"></app-travel-amount>
+    <div>
+    <app-advance-required [viewOnly]="viewOnly" 
+       [currentRole]="currentRole" (onAdvanceRequiredChange)="handleAdvanceRequiredChange($event)"></app-advance-required>
+  </div>
+    <div *ngIf="isAdvanceRequired">
+    <app-advance-given [viewOnly]="viewOnly" 
+       [currentRole]="currentRole"></app-advance-given>
   </div>
   <div>
     <app-travel-visa [viewOnly]="viewOnly" 
        [currentRole]="currentRole"></app-travel-visa>
   </div>
-  <gen-card headerText="Approver" class="mb-3">
-    <ng-container body>
-      <gen-table
-        [columns]="approverColumns"
-        [dataList]="approverTableData"
-        [tableStyle]="'normal'"
-        [paginatorFlag]="false"
-        [sortFlag]="false"
-        [headingClass]="'label-color font-normal'"
-      ></gen-table>
-    </ng-container>
-  </gen-card>
-
+    <div>
+    <app-approver-details [viewOnly]="viewOnly" 
+       [currentRole]="currentRole"></app-approver-details>
+  </div>
   <div>
     <app-request-notes></app-request-notes>
   </div>
@@ -57,12 +52,12 @@
         >Cancel</a
       >
       <div class="flex gap-2">
-        <gen-button
+        <!-- <gen-button
           [btnLabel]="'Save'"
           [btnType]="'border-btn'"
           class="reset-btn-color"
           (onClick)="onSave()"
-        ></gen-button>
+        ></gen-button> -->
         <gen-button [btnLabel]="'Submit'" (onClick)="onSubmit()"></gen-button>
       </div>
     </div>

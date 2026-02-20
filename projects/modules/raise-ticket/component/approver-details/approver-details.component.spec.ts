@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TravelAmountComponent } from './travel-amount.component';
+import { ApproverDetailsComponent } from './approver-details.component';
 
-describe('TravelAmountComponent', () => {
-  let component: TravelAmountComponent;
-  let fixture: ComponentFixture<TravelAmountComponent>;
+describe('ApproverDetailsComponent', () => {
+  let component: ApproverDetailsComponent;
+  let fixture: ComponentFixture<ApproverDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TravelAmountComponent]
+      imports: [ApproverDetailsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TravelAmountComponent);
+    fixture = TestBed.createComponent(ApproverDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

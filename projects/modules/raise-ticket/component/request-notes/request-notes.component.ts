@@ -17,6 +17,10 @@ export class RequestNotesComponent implements OnInit {
   formMode: Mode = Mode.create;
   formData: any = { };
 
+  get effectiveMode(): Mode {
+    return this.viewOnly ? Mode.view : this.formMode;
+  }
+
   formConfig: GenericFormConfig = {
     api: '',
     cardType: 'non-border',
@@ -47,7 +51,18 @@ export class RequestNotesComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // Parent helpers
+  patchFromApi(data: any): void {
+    if (!data) return;
+    const patchData = {
+      requestNotes: data.descriptionNote || '',
+    };
+    if (this.baseForm?.form) {
+      this.baseForm.form.patchValue(patchData);
+    } else {
+      this.formData = { ...this.formData, ...patchData };
+    }
+  }
+
   getValue(): any {
     return this.baseForm ? this.baseForm.form.getRawValue() : this.formData;
   }

@@ -49,21 +49,21 @@
     <div class="username mb-4">
       <p-floatLabel>
         <input
-          id="username"
+          id="email"
           type="text"
           pInputText
-          formControlName="username"
+          formControlName="email"
           autocomplete
         />
-        <label for="username">User name</label>
+        <label for="email">Email</label>
       </p-floatLabel>
       <div
         *ngIf="
-          loginForm.get('username').touched && loginForm.get('username').invalid
+          loginForm.get('email').touched && loginForm.get('email').invalid
         "
         class="text-red-500 text-sm"
       >
-        Username is required.
+        Email is required.
       </div>
     </div>
 

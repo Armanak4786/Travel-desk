@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { MasterDataService, DropdownOption } from 'projects/modules/shared/services/master-data.service';
 
 @Component({
   selector: 'app-peridium',
@@ -13,24 +14,23 @@ export class PeridiumComponent implements OnInit,OnChanges {
   @Output() totalChange = new EventEmitter<number>(); 
   grandTotal: number = 0;
 
-  // Options... (Keep your arrays here)
-  currencyOptions: any[] = [
-    { label: "USD", value: "USD" },
-    { label: "EUR", value: "EUR" },
-    { label: "GBP", value: "GBP" },
-    { label: "SGD", value: "SGD" },
-    { label: "AED", value: "AED" },
-    { label: "INR", value: "INR" }
-  ];
+  // Options - loaded from MasterDataService
+  currencyOptions: DropdownOption[] = [];
 
   daysOptions = Array.from({ length: 30 }, (_, i) => ({
     label: (i + 1).toString(),
     value: i + 1,
   }));
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private masterDataService: MasterDataService
+  ) {}
 
 ngOnInit(): void {
+  // Load master data options
+  this.loadMasterDataOptions();
+
   // Just initialize the empty form container. 
   // Logic waits for ngOnChanges to ensure we have the correct Role.
   this.peridiumForm = this.fb.group({
@@ -42,6 +42,13 @@ ngOnInit(): void {
     }
 
     this.setupFormBasedOnRole();
+}
+
+/**
+ * Load dropdown options from MasterDataService
+ */
+private loadMasterDataOptions(): void {
+  this.currencyOptions = this.masterDataService.getCurrencyTypes();
 }
 
 ngOnChanges(changes: SimpleChanges): void {
@@ -67,9 +74,13 @@ ngOnChanges(changes: SimpleChanges): void {
 
   // Helper to load dummy data for admins/viewers
   loadMockData() {
+    // Get currency IDs from master data
+    const usdId = this.masterDataService.getIdByName('currencyTypes', 'USD') || 2;
+    const eurId = this.masterDataService.getIdByName('currencyTypes', 'EUR') || 3;
+
     const mockData = [
-      { noOfDays: 5, currency: 'USD', perDayAllowance: 50, forexRate: 83 },
-      { noOfDays: 3, currency: 'EUR', perDayAllowance: 100, forexRate: 90 }
+      { noOfDays: 5, currency: usdId, perDayAllowance: 50, forexRate: 83 },
+      { noOfDays: 3, currency: eurId, perDayAllowance: 100, forexRate: 90 }
     ];
 
     mockData.forEach(data => {
@@ -85,9 +96,12 @@ ngOnChanges(changes: SimpleChanges): void {
   }
 
   createPeridiumItem(): FormGroup {
+    // Default to USD (id: 2) from master data
+    const defaultCurrencyId = this.masterDataService.getIdByName('currencyTypes', 'USD') || 2;
+
     const group = this.fb.group({
       noOfDays: [null, Validators.required],
-      currency: ['USD', Validators.required],
+      currency: [defaultCurrencyId, Validators.required],
       perDayAllowance: [null, Validators.required],
       totalAmount: [{ value: 0, disabled: true }], 
       forexRate: [1, Validators.required],

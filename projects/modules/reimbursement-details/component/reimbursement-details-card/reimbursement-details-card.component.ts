@@ -22,8 +22,7 @@ export class ReimbursementDetailsCardComponent implements OnInit {
   @Input() currentRole: string = '';
   formMode: Mode = Mode.create;
   formData: {
-  band: 10,
-  grade: "SSE",
+  grade: 10,
   cityVisited: "Pune",
   projectName: "XYZ",
   projectPin: "411001",
@@ -38,27 +37,17 @@ export class ReimbursementDetailsCardComponent implements OnInit {
     sections: [
       {
         sectionName: "reimbursementDetailsCard",
-        cols: 12,
         headerTitle: "Reimbursement Details",
         headerClass: "text-xs col-12 font-semibold text-primary",
-        sectionClass:" mb-3 w-full text-xs mt-3 shadow-2 p-4 pb-0 bg-white border-round",
+        sectionClass:" mb-3 w-full text-xs mt-3 shadow-2 p-4 pb-0 bg-white reimbursement-details-section border-round",
       },
     ],
     fields: [
       {
         type: "number",
-        name: "band",
-        inputType: "vertical",
-        className: "col-2 no-underline band-text-left",
-        label: "Band",
-        sectionName: "reimbursementDetailsCard",
-        disabled: true,
-      },
-      {
-        type: "text",
         name: "grade",
         inputType: "vertical",
-        className: "col-2 no-underline ml-8",
+        className: "col-1 no-underline grade-text-left",
         label: "Grade",
         labelClass: "text-xs",
         sectionName: "reimbursementDetailsCard",
@@ -68,7 +57,7 @@ export class ReimbursementDetailsCardComponent implements OnInit {
         type: "text",
         name: "cityVisited",
         inputType: "vertical",
-        className: "col-2 no-underline ml-8",
+        className: "col-1 no-underline",
         label: "City Visited",
         sectionName: "reimbursementDetailsCard",
         disabled: true,
@@ -77,7 +66,7 @@ export class ReimbursementDetailsCardComponent implements OnInit {
         type: "text",
         name: "projectName",
         inputType: "vertical",
-        className: "col-2 no-underline ml-8",
+        className: "col-2 w-12rem no-underline",
         label: "Project Name",
         sectionName: "reimbursementDetailsCard",
         disabled: true,
@@ -86,7 +75,7 @@ export class ReimbursementDetailsCardComponent implements OnInit {
         type: "text",
         name: "projectPin",
         inputType: "vertical",
-        className: "col-2 no-underline",
+        className: "col-1 no-underline",
         label: "Project PIN",
         labelClass: "color-secondary",
         sectionName: "reimbursementDetailsCard",
@@ -96,7 +85,7 @@ export class ReimbursementDetailsCardComponent implements OnInit {
         type: "text",
         name: "fromDate",
         inputType: "vertical",
-        className: "col-2 no-underline ml-8",
+        className: "col-1 no-underline",
         label: "From Date",
         labelClass: "color-secondary",
         sectionName: "reimbursementDetailsCard",
@@ -106,7 +95,7 @@ export class ReimbursementDetailsCardComponent implements OnInit {
         type: "text",
         name: "toDate",
         inputType: "vertical",
-        className: "col-2 no-underline ml-8",
+        className: "col-1 no-underline",
         label: "To Date",
         labelClass: "color-secondary",
         sectionName: "reimbursementDetailsCard",
@@ -122,8 +111,7 @@ export class ReimbursementDetailsCardComponent implements OnInit {
   ngAfterViewInit(): void {
   setTimeout(() => {
     this.baseForm.form.patchValue({
-      band: 10,
-      grade: "A1",
+      grade: 10,
       cityVisited: "Mumbai",
       projectName: "Internal Portal",
       projectPin: "400001",

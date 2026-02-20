@@ -4,6 +4,33 @@
 >
   <div class="mb-3 font-bold text-teal-700 text-sm">Travel Details</div>
 
+  <div class="flex gap-4 mb-4 p-3">
+    <div class="flex flex-column gap-1">
+      <label class="block text-xs text-500 font-medium">Travel Date<span class="text-red-500">*</span></label>
+      <p-calendar
+        formControlName="travelDate"
+        dateFormat="d M y - D"
+        placeholder="Select Date"
+        styleClass="w-full border-none p-0 custom-cal"
+        inputStyleClass="text-500 font-semibold"
+        [showIcon]="true"
+        appendTo="body"
+      ></p-calendar>
+    </div>
+
+    <div class="flex flex-column gap-1">
+      <label class="block text-xs text-500 font-medium">Return Date<span class="text-red-500">*</span></label>
+      <p-calendar
+        formControlName="returnDate"
+        dateFormat="d M y - D"
+        placeholder="Select Date"
+        styleClass="w-full border-none p-0 custom-cal"
+        inputStyleClass="text-500 font-semibold"
+        [showIcon]="true"
+        appendTo="body"
+      ></p-calendar>
+    </div>
+  </div>
   <div formArrayName="travelDetails">
     <div
       *ngFor="
@@ -48,30 +75,43 @@
             <label class="block text-xs text-500 mb-1"
               >From<span class="text-red-500">*</span></label
             >
-            <p-dropdown
-              [options]="cityOptions"
-              formControlName="fromCity"
-              placeholder="Select"
-              styleClass="w-full border-none p-0 mt-2"
-              inputStyleClass="text-lg text-900"
-              [filter]="true"
-              appendTo="body"
-            >
-              <ng-template pTemplate="selectedItem" let-selected>
-                <div class="flex flex-column">
-                  <span class="text-xl text-900">{{ selected.label }}</span>
-                  <span class="text-xs mt-4 text-500 text-overflow-ellipsis">{{
-                    selected.subLabel
-                  }}</span>
-                </div>
-              </ng-template>
-              <ng-template pTemplate="item" let-opt>
-                <div class="flex flex-column">
-                  <span class="font-bold">{{ opt.label }}</span>
-                  <span class="text-xs">{{ opt.subLabel }}</span>
-                </div>
-              </ng-template>
-            </p-dropdown>
+            <!-- View Mode: Display as plain text -->
+            <ng-container *ngIf="viewOnly; else fromCityEdit">
+              <div class="flex flex-column mt-2">
+                <span class="text-xl text-900 font-medium">{{ item.get('fromCity')?.value?.label || item.get('fromCity')?.value }}</span>
+                <span *ngIf="item.get('fromCity')?.value?.subLabel" class="text-xs text-500 mt-1">
+                  {{ item.get('fromCity')?.value?.subLabel }}
+                </span>
+              </div>
+            </ng-container>
+            <!-- Edit Mode: Autocomplete -->
+            <ng-template #fromCityEdit>
+              <p-autoComplete
+                formControlName="fromCity"
+                [suggestions]="getCityOptions(i, 'from')"
+                (completeMethod)="onCitySearch($event, i, 'from')"
+                field="label"
+                [minLength]="2"
+                [delay]="300"
+                placeholder="Search city..."
+                styleClass="w-full border-none p-0 mt-2 city-autocomplete"
+                inputStyleClass="text-lg text-900 w-full"
+                panelStyleClass="city-autocomplete-panel"
+                [showEmptyMessage]="true"
+                emptyMessage="No cities found"
+                appendTo="body"
+              >
+                <ng-template let-city pTemplate="item">
+                  <div class="flex flex-column gap-1 py-2">
+                    <span class="font-bold text-900 text-base">{{ city.label }}</span>
+                    <span class="text-xs text-500 white-space-nowrap">{{ city.subLabel }}</span>
+                  </div>
+                </ng-template>
+              </p-autoComplete>
+              <div *ngIf="item.get('fromCity')?.value?.subLabel" class="text-xs text-500 mt-1 text-overflow-ellipsis">
+                {{ item.get('fromCity')?.value?.subLabel }}
+              </div>
+            </ng-template>
 
             <div *ngIf="!viewOnly"
               class="absolute hidden xl:flex align-items-center justify-content-center bg-white border-1 border-300 border-circle cursor-pointer hover:surface-100 transition-colors shadow-1"
@@ -95,30 +135,43 @@
             <label class="block text-xs text-500 mb-1"
               >To<span class="text-red-500">*</span></label
             >
-            <p-dropdown
-              [options]="cityOptions"
-              formControlName="toCity"
-              placeholder="Select"
-              styleClass="w-full border-none p-0 text-xl text-900 shadow-none mt-2"
-              inputStyleClass="text-lg text-900"
-              [filter]="true"
-              appendTo="body"
-            >
-              <ng-template pTemplate="selectedItem" let-selected>
-                <div class="flex flex-column">
-                  <span class="text-xl text-900">{{ selected.label }}</span>
-                  <span class="text-xs mt-4 text-500 text-overflow-ellipsis">{{
-                    selected.subLabel
-                  }}</span>
-                </div>
-              </ng-template>
-              <ng-template pTemplate="item" let-opt>
-                <div class="flex flex-column">
-                  <span class="font-bold">{{ opt.label }}</span>
-                  <span class="text-xs">{{ opt.subLabel }}</span>
-                </div>
-              </ng-template>
-            </p-dropdown>
+            <!-- View Mode: Display as plain text -->
+            <ng-container *ngIf="viewOnly; else toCityEdit">
+              <div class="flex flex-column mt-2">
+                <span class="text-xl text-900 font-medium">{{ item.get('toCity')?.value?.label || item.get('toCity')?.value }}</span>
+                <span *ngIf="item.get('toCity')?.value?.subLabel" class="text-xs text-500 mt-1">
+                  {{ item.get('toCity')?.value?.subLabel }}
+                </span>
+              </div>
+            </ng-container>
+            <!-- Edit Mode: Autocomplete -->
+            <ng-template #toCityEdit>
+              <p-autoComplete
+                formControlName="toCity"
+                [suggestions]="getCityOptions(i, 'to')"
+                (completeMethod)="onCitySearch($event, i, 'to')"
+                field="label"
+                [minLength]="2"
+                [delay]="300"
+                placeholder="Search city..."
+                styleClass="w-full border-none p-0 mt-2 city-autocomplete"
+                inputStyleClass="text-lg text-900 w-full"
+                panelStyleClass="city-autocomplete-panel"
+                [showEmptyMessage]="true"
+                emptyMessage="No cities found"
+                appendTo="body"
+              >
+                <ng-template let-city pTemplate="item">
+                  <div class="flex flex-column gap-1 py-2">
+                    <span class="font-bold text-900 text-base">{{ city.label }}</span>
+                    <span class="text-xs text-500 white-space-nowrap">{{ city.subLabel }}</span>
+                  </div>
+                </ng-template>
+              </p-autoComplete>
+              <div *ngIf="item.get('toCity')?.value?.subLabel" class="text-xs text-500 mt-1 text-overflow-ellipsis">
+                {{ item.get('toCity')?.value?.subLabel }}
+              </div>
+            </ng-template>
           </div>
 
           <div

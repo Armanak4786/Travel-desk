@@ -34,6 +34,11 @@ import { TermsConditionsComponent } from "./terms-conditions/terms-conditions.co
           import("./login/login.module").then((m) => m.LoginModule),
       },
       {
+        path: "signup",
+        loadChildren: () =>
+          import("./login/login.module").then((m) => m.LoginModule),
+      },
+      {
         path: "change-password",
         loadChildren: () =>
           import("./change-password/change-password.module").then(
